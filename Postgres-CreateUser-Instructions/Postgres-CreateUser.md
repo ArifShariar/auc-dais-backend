@@ -8,7 +8,7 @@
     
     this will initiate the postgres interactive shell in the terminal.
     
-    ![Untitled](Postgres-CreateUser%20a589ba65675443e4912d5b8c554c6880/Untitled.png)
+    ![Untitled](Postgres-CreateUser-Instructions/Postgres-CreateUser/Untitled.png)
     
 
 1. To create new user:
@@ -17,7 +17,7 @@
     
     CREATE USER aucdais WITH PASSWORD ‘1234’;
     
-    ![postgres-createuser.png](Postgres-CreateUser%20a589ba65675443e4912d5b8c554c6880/postgres-createuser.png)
+    ![postgres-createuser.png](Postgres-CreateUser-Instructions/Postgres-CreateUser/postgres-createuser.png)
     
 
 1. Now we need to give necessary permissions to the newly created user
@@ -64,3 +64,8 @@
     This will ask for the password of the user aucdais. Type the password **1234** as we have defined earlier.
     
     ![Untitled](Postgres-CreateUser%20a589ba65675443e4912d5b8c554c6880/Untitled%201.png)
+3. If you have created a user, then proceed to create a database.
+   1. Open PGAdmin4 software
+   2. Create a new Database
+   3. Give the database the name 'auc-dais', set all necessary options
+   4. Without creating a database, the application will show errors.
