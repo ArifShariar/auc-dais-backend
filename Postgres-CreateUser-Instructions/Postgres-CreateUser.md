@@ -8,7 +8,7 @@
     
     this will initiate the postgres interactive shell in the terminal.
     
-    ![Untitled](Postgres-CreateUser-Instructions/Postgres-CreateUser/Untitled.png)
+    ![Untitled](Postgres-CreateUser/Untitled.png)
     
 
 1. To create new user:
@@ -17,7 +17,7 @@
     
     CREATE USER aucdais WITH PASSWORD ‘1234’;
     
-    ![postgres-createuser.png](Postgres-CreateUser-Instructions/Postgres-CreateUser/postgres-createuser.png)
+    ![postgres-createuser.png](Postgres-CreateUser/postgres-createuser.png)
     
 
 1. Now we need to give necessary permissions to the newly created user
@@ -25,7 +25,7 @@
     
     ALTER USER aucdais WITH SUPERUSER CREATEROLE CREATEDB REPLICATION;
     
-    ![postgres-permission.png](Postgres-CreateUser%20a589ba65675443e4912d5b8c554c6880/postgres-permission.png)
+    ![postgres-permission.png](Postgres-CreateUser/postgres-permission.png)
     
 2. To login as the new user ‘**aucdais**’, first logout from the current ‘**postgres**’ user by the command
     
@@ -39,11 +39,11 @@
     
     At this point the **pg_hba.conf** file will open up. Scroll down at the bottom. Focus on line number **94**.
     
-    ![postgres-config.png](Postgres-CreateUser%20a589ba65675443e4912d5b8c554c6880/postgres-config.png)
+    ![postgres-config.png](Postgres-CreateUser/postgres-config.png)
     
     Change the method named “**peer**” to “**md5**”. the file will look like the below snippet.
     
-    ![postgres-config2.png](Postgres-CreateUser%20a589ba65675443e4912d5b8c554c6880/postgres-config2.png)
+    ![postgres-config2.png](Postgres-CreateUser/postgres-config2.png)
     
     Now save and close the file.
     
@@ -63,7 +63,8 @@
     
     This will ask for the password of the user aucdais. Type the password **1234** as we have defined earlier.
     
-    ![Untitled](Postgres-CreateUser%20a589ba65675443e4912d5b8c554c6880/Untitled%201.png)
+    ![Untitled](Postgres-CreateUser/Untitled1.png)
+
 3. If you have created a user, then proceed to create a database.
    1. Open PGAdmin4 software
    2. Create a new Database
