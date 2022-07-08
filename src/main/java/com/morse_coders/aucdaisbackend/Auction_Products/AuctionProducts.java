@@ -10,7 +10,7 @@ import java.util.Date;
 @Table
 public class AuctionProducts {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SequenceGenerator")
     @SequenceGenerator(name = "SequenceGenerator", sequenceName = "auction_products_seq", allocationSize = 1)
 
     private Long id;
