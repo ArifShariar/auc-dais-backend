@@ -18,8 +18,8 @@ public class AuctionProducts {
     // create a one to many field with user
     // a user can have multiple auction products
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
+    @JoinColumn(name = "owner_id")
+    private Users owner;
     
     @OneToOne
     @JoinColumn(name = "max_bidder_id")
@@ -41,12 +41,9 @@ public class AuctionProducts {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date auction_start_date;
 
-    private String auction_start_time;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date auction_end_date;
-
-    private String auction_end_time;
 
 
     private String address;
@@ -56,8 +53,8 @@ public class AuctionProducts {
     public AuctionProducts() {
     }
 
-    public AuctionProducts(Users user, Users max_bidder, String product_name, String product_description, String tags, Double minimum_price, Double max_bid, String photos, Date auction_start_date, String auction_start_time, Date auction_end_date, String auction_end_time, String address, Boolean isApproved) {
-        this.user = user;
+    public AuctionProducts(Users owner, Users max_bidder, String product_name, String product_description, String tags, Double minimum_price, Double max_bid, String photos, Date auction_start_date, Date auction_end_date, String address, Boolean isApproved) {
+        this.owner = owner;
         this.max_bidder = max_bidder;
         this.product_name = product_name;
         this.product_description = product_description;
@@ -66,16 +63,14 @@ public class AuctionProducts {
         this.max_bid = max_bid;
         this.photos = photos;
         this.auction_start_date = auction_start_date;
-        this.auction_start_time = auction_start_time;
         this.auction_end_date = auction_end_date;
-        this.auction_end_time = auction_end_time;
         this.address = address;
         this.isApproved = isApproved;
     }
 
-    public AuctionProducts(Long id, Users user, Users max_bidder, String product_name, String product_description, String tags, Double minimum_price, Double max_bid, String photos, Date auction_start_date, String auction_start_time, Date auction_end_date, String auction_end_time, String address, Boolean isApproved) {
+    public AuctionProducts(Long id, Users owner, Users max_bidder, String product_name, String product_description, String tags, Double minimum_price, Double max_bid, String photos, Date auction_start_date, Date auction_end_date, String address, Boolean isApproved) {
         this.id = id;
-        this.user = user;
+        this.owner = owner;
         this.max_bidder = max_bidder;
         this.product_name = product_name;
         this.product_description = product_description;
@@ -84,9 +79,7 @@ public class AuctionProducts {
         this.max_bid = max_bid;
         this.photos = photos;
         this.auction_start_date = auction_start_date;
-        this.auction_start_time = auction_start_time;
         this.auction_end_date = auction_end_date;
-        this.auction_end_time = auction_end_time;
         this.address = address;
         this.isApproved = isApproved;
     }
@@ -99,12 +92,12 @@ public class AuctionProducts {
         this.id = id;
     }
 
-    public Users getUser() {
-        return user;
+    public Users getOwner() {
+        return owner;
     }
 
-    public void setUser(Users user) {
-        this.user = user;
+    public void setOwner(Users user) {
+        this.owner = user;
     }
 
     public Users getMax_bidder() {
@@ -171,28 +164,12 @@ public class AuctionProducts {
         this.auction_start_date = auction_start_date;
     }
 
-    public String getAuction_start_time() {
-        return auction_start_time;
-    }
-
-    public void setAuction_start_time(String auction_start_time) {
-        this.auction_start_time = auction_start_time;
-    }
-
     public Date getAuction_end_date() {
         return auction_end_date;
     }
 
     public void setAuction_end_date(Date auction_end_date) {
         this.auction_end_date = auction_end_date;
-    }
-
-    public String getAuction_end_time() {
-        return auction_end_time;
-    }
-
-    public void setAuction_end_time(String auction_end_time) {
-        this.auction_end_time = auction_end_time;
     }
 
     public String getAddress() {
