@@ -51,7 +51,6 @@ public class Users {
         this.dateOfBirth = dateOfBirth;
     }
 
-
     public Long getId() {
         return id;
     }

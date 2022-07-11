@@ -68,6 +68,7 @@ public class AuctionProducts {
         this.isApproved = isApproved;
     }
 
+
     public AuctionProducts(Long id, Users owner, Users max_bidder, String product_name, String product_description, String tags, Double minimum_price, Double max_bid, String photos, Date auction_start_date, Date auction_end_date, String address, Boolean isApproved) {
         this.id = id;
         this.owner = owner;

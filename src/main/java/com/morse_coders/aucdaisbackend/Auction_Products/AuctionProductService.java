@@ -21,6 +21,7 @@ public class AuctionProductService {
         auctionProductRepository.save(auctionProduct);
     }
 
+
     // get all auction products of a specific user
     public List<AuctionProducts> getAllAuctionProductsOfUser(Long userId) {
         return auctionProductRepository.findAllByOwnerId(userId);
