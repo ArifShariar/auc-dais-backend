@@ -50,33 +50,48 @@ public class AuctionProductController {
      */
     @PostMapping("/create")
 
-    public void createAuctionProduct(@RequestParam String owner_id, @RequestParam(required = false) String max_bidder_id, @RequestParam String product_name,
+    public void createAuctionProduct(@RequestParam String owner_id, @RequestParam(required = false) String max_bidder_id, @RequestParam String product_name, @RequestParam Boolean isOnline,
                                      @RequestParam String product_description, @RequestParam(required = false) String tags, @RequestParam Double minimum_price,
                                      @RequestParam(required = false) Double max_bid, @RequestParam(required = false) String photos, @RequestParam String auction_start_date,
                                      @RequestParam String auction_end_date, @RequestParam(required = false) String address) throws ParseException {
-        System.out.println("owner_id: " + owner_id);
-        System.out.println("max_bidder_id: " + max_bidder_id);
-        System.out.println("product_name: " + product_name);
-        System.out.println("product_description: " + product_description);
-        System.out.println("tags: " + tags);
-        System.out.println("minimum_price: " + minimum_price);
-        System.out.println("max_bid: " + max_bid);
-        System.out.println("photos: " + photos);
-        System.out.println("auction_start_date: " + auction_start_date);
-        System.out.println("auction_end_date: " + auction_end_date);
-        System.out.println("address: " + address);
         Boolean isApproved = false;
 
         Date auction_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(auction_start_date);
         Date auction_end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(auction_end_date);
 
         Users owner = usersService.getUserById(Long.parseLong(owner_id));
-        if (max_bidder_id != null) {
+
+        AuctionProducts auctionProduct = new AuctionProducts();
+        auctionProduct.setOwner(owner);
+        auctionProduct.setProduct_name(product_name);
+        auctionProduct.setProduct_description(product_description);
+
+        if(max_bidder_id!=null){
             Users max_bidder = usersService.getUserById(Long.parseLong(max_bidder_id));
-            auctionProductService.createAuctionProduct(new AuctionProducts(owner, max_bidder, product_name, product_description, tags, minimum_price, max_bid, photos, auction_start, auction_end, address, isApproved));
-        } else {
-            auctionProductService.createAuctionProduct(new AuctionProducts(owner, product_name, product_description, tags, minimum_price, max_bid, photos, auction_start, auction_end, address, isApproved));
+            auctionProduct.setMax_bidder(max_bidder);
         }
+
+        if(tags!=null){
+            auctionProduct.setTags(tags);
+        }
+        auctionProduct.setMinimum_price(minimum_price);
+        if(max_bid!=null){
+            auctionProduct.setMax_bid(max_bid);
+        }
+        if(photos!=null){
+            auctionProduct.setPhotos(photos);
+        }
+        auctionProduct.setAuction_start_date(auction_start);
+        auctionProduct.setAuction_end_date(auction_end);
+        if(address!=null){
+            auctionProduct.setAddress(address);
+        }
+
+        auctionProduct.setOnline(isOnline);
+
+        auctionProduct.setApproved(isApproved);
+        auctionProductService.createAuctionProduct(auctionProduct);
+
 
 
     }

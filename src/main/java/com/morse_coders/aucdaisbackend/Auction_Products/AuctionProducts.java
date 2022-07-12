@@ -37,6 +37,8 @@ public class AuctionProducts {
 
     private String photos;
 
+    private Boolean isOnline;
+
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date auction_start_date;
@@ -50,53 +52,17 @@ public class AuctionProducts {
 
     private Boolean isApproved;
 
-    public AuctionProducts() {
+    public AuctionProducts() {}
+
+
+
+
+    public Boolean getOnline() {
+        return isOnline;
     }
 
-    public AuctionProducts(Users owner, Users max_bidder, String product_name, String product_description, String tags, Double minimum_price, Double max_bid, String photos, Date auction_start_date, Date auction_end_date, String address, Boolean isApproved) {
-        this.owner = owner;
-        this.max_bidder = max_bidder;
-        this.product_name = product_name;
-        this.product_description = product_description;
-        this.tags = tags;
-        this.minimum_price = minimum_price;
-        this.max_bid = max_bid;
-        this.photos = photos;
-        this.auction_start_date = auction_start_date;
-        this.auction_end_date = auction_end_date;
-        this.address = address;
-        this.isApproved = isApproved;
-    }
-
-
-    public AuctionProducts(Long id, Users owner, Users max_bidder, String product_name, String product_description, String tags, Double minimum_price, Double max_bid, String photos, Date auction_start_date, Date auction_end_date, String address, Boolean isApproved) {
-        this.id = id;
-        this.owner = owner;
-        this.max_bidder = max_bidder;
-        this.product_name = product_name;
-        this.product_description = product_description;
-        this.tags = tags;
-        this.minimum_price = minimum_price;
-        this.max_bid = max_bid;
-        this.photos = photos;
-        this.auction_start_date = auction_start_date;
-        this.auction_end_date = auction_end_date;
-        this.address = address;
-        this.isApproved = isApproved;
-    }
-
-    public AuctionProducts(Users owner, String product_name, String product_description, String tags, Double minimum_price, Double max_bid, String photos, Date auction_start_date, Date auction_end_date, String address, Boolean isApproved) {
-        this.owner = owner;
-        this.product_name = product_name;
-        this.product_description = product_description;
-        this.tags = tags;
-        this.minimum_price = minimum_price;
-        this.max_bid = max_bid;
-        this.photos = photos;
-        this.auction_start_date = auction_start_date;
-        this.auction_end_date = auction_end_date;
-        this.address = address;
-        this.isApproved = isApproved;
+    public void setOnline(Boolean online) {
+        isOnline = online;
     }
 
     public Long getId() {
