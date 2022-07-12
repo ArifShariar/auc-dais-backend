@@ -50,7 +50,7 @@ public class AuctionProductController {
      */
     @PostMapping("/create")
 
-    public void createAuctionProduct(@RequestParam String owner_id, @RequestParam String max_bidder_id, @RequestParam String product_name,
+    public void createAuctionProduct(@RequestParam String owner_id, @RequestParam(required = false) String max_bidder_id, @RequestParam String product_name,
                                      @RequestParam String product_description, @RequestParam(required = false) String tags, @RequestParam Double minimum_price,
                                      @RequestParam(required = false) Double max_bid, @RequestParam(required = false) String photos, @RequestParam String auction_start_date,
                                      @RequestParam String auction_end_date, @RequestParam(required = false) String address) throws ParseException {
@@ -71,8 +71,12 @@ public class AuctionProductController {
         Date auction_end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(auction_end_date);
 
         Users owner = usersService.getUserById(Long.parseLong(owner_id));
-        Users max_bidder = usersService.getUserById(Long.parseLong(max_bidder_id));
-        auctionProductService.createAuctionProduct(new AuctionProducts(owner, max_bidder, product_name, product_description, tags, minimum_price, max_bid, photos, auction_start, auction_end, address, isApproved));
+        if (max_bidder_id != null) {
+            Users max_bidder = usersService.getUserById(Long.parseLong(max_bidder_id));
+            auctionProductService.createAuctionProduct(new AuctionProducts(owner, max_bidder, product_name, product_description, tags, minimum_price, max_bid, photos, auction_start, auction_end, address, isApproved));
+        } else {
+            auctionProductService.createAuctionProduct(new AuctionProducts(owner, product_name, product_description, tags, minimum_price, max_bid, photos, auction_start, auction_end, address, isApproved));
+        }
 
 
     }
