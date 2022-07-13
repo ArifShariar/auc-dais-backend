@@ -96,4 +96,80 @@ public class AuctionProductController {
 
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteAuctionProduct(@PathVariable String id) {
+        auctionProductService.deleteAuctionProduct(Long.parseLong(id));
+    }
+
+    @PutMapping("/update/{id}")
+    public void updateAuctionProduct(@PathVariable String id, @RequestParam(required = false) String product_name, @RequestParam(required = false) Boolean isOnline,
+                                     @RequestParam (required = false) String product_description, @RequestParam(required = false) String tags, @RequestParam(required = false) Double minimum_price,
+                                     @RequestParam(required = false) Double max_bid, @RequestParam(required = false) String photos, @RequestParam(required = false) String auction_start_date,
+                                     @RequestParam(required = false) String auction_end_date, @RequestParam(required = false) String address) throws ParseException {
+
+        AuctionProducts auctionProduct = auctionProductService.getAuctionProductById(Long.parseLong(id));
+
+        if(auctionProduct!=null){
+
+
+            if (product_name!=null){
+                auctionProduct.setProduct_name(product_name);
+            }
+            if (isOnline!=null){
+                auctionProduct.setOnline(isOnline);
+            }
+            if (product_description!=null){
+                auctionProduct.setProduct_description(product_description);
+            }
+            if (tags!=null){
+                auctionProduct.setTags(tags);
+            }
+            if (minimum_price!=null){
+                auctionProduct.setMinimum_price(minimum_price);
+            }
+            if (max_bid!=null){
+                auctionProduct.setMax_bid(max_bid);
+            }
+            if (photos!=null){
+                auctionProduct.setPhotos(photos);
+            }
+
+            // check if new starting date is previous of today's date
+            // if yes, throw error
+            if(auction_start_date!=null){
+                Date auction_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(auction_start_date);
+
+                if (auction_start.before(new Date())){
+                    throw new IllegalArgumentException("Auction start date cannot be previous of today's date");
+                } else {
+                    auctionProduct.setAuction_start_date(auction_start);
+                }
+
+            }
+
+
+            // check if new ending date is before of today's date
+            // if yes, throw an error
+            if (auction_end_date!=null){
+                Date auction_end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(auction_end_date);
+                if (auction_end.before(new Date())){
+                    throw new IllegalArgumentException("Auction end date cannot be before today's date");
+                } else {
+                    auctionProduct.setAuction_end_date(auction_end);
+                }
+            }
+
+            if (address!=null){
+                auctionProduct.setAddress(address);
+            }
+
+            auctionProductService.updateAuctionProduct(auctionProduct);
+
+        }
+        else{
+            throw new IllegalArgumentException("Auction product with id " + id + " does not exist");
+        }
+
+    }
+
 }

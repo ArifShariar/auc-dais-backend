@@ -3,6 +3,8 @@ package com.morse_coders.aucdaisbackend.Auction_Products;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class AuctionProductService {
     private final AuctionProductRepository auctionProductRepository;
@@ -30,5 +32,16 @@ public class AuctionProductService {
     // delete an auction product by auction id
     public void deleteAuctionProduct(Long auctionId) {
         auctionProductRepository.deleteById(auctionId);
+    }
+
+    public AuctionProducts getAuctionProductById(long id) {
+        if (auctionProductRepository.findById(id).isPresent()){
+            return auctionProductRepository.findById(id).get();
+        }
+        return null;
+    }
+
+    public void updateAuctionProduct(AuctionProducts auctionProduct) {
+        auctionProductRepository.save(auctionProduct);
     }
 }
