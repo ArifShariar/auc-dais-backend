@@ -49,8 +49,7 @@ public class AuctionProductController {
     * @return void
      */
     @PostMapping("/create")
-
-    public void createAuctionProduct(@RequestParam String owner_id, @RequestParam(required = false) String max_bidder_id, @RequestParam String product_name, @RequestParam Boolean isOnline,
+    public void createAuctionProduct(@RequestParam(required = false) String owner_id, @RequestParam(required = false) String max_bidder_id, @RequestParam String product_name, @RequestParam Boolean isOnline,
                                      @RequestParam String product_description, @RequestParam(required = false) String tags, @RequestParam Double minimum_price,
                                      @RequestParam(required = false) Double max_bid, @RequestParam(required = false) String photos, @RequestParam String auction_start_date,
                                      @RequestParam String auction_end_date, @RequestParam(required = false) String address) throws ParseException {
@@ -59,7 +58,14 @@ public class AuctionProductController {
         Date auction_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(auction_start_date);
         Date auction_end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(auction_end_date);
 
-        Users owner = usersService.getUserById(Long.parseLong(owner_id));
+        Users owner = new Users();
+        if(owner_id!=null){
+            owner = usersService.getUserById(Long.parseLong(owner_id));
+        }
+        else{
+            owner = usersService.getUserById(1L);
+        }
+
 
         AuctionProducts auctionProduct = new AuctionProducts();
         auctionProduct.setOwner(owner);

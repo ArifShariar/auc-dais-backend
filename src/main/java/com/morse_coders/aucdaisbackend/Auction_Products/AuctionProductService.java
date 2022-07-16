@@ -1,14 +1,15 @@
 package com.morse_coders.aucdaisbackend.Auction_Products;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AuctionProductService {
     private final AuctionProductRepository auctionProductRepository;
 
+    @Autowired
     public AuctionProductService(AuctionProductRepository auctionProductRepository) {
         this.auctionProductRepository = auctionProductRepository;
     }
