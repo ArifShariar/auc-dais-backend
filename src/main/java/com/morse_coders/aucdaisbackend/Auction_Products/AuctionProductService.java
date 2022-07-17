@@ -45,4 +45,8 @@ public class AuctionProductService {
     public void updateAuctionProduct(AuctionProducts auctionProduct) {
         auctionProductRepository.save(auctionProduct);
     }
+
+    public List<AuctionProducts> findAllByproduct_nameOrproduct_descriptionOrTags(String keyword) {
+        return auctionProductRepository.findAllByproduct_nameOrproduct_descriptionOrTags(keyword);
+    }
 }

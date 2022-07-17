@@ -44,6 +44,11 @@ public class AuctionProductController {
         }
     }
 
+    @GetMapping("/search/{keyword}")
+    public List<AuctionProducts> findAllByproduct_nameOrproduct_descriptionOrTags(@PathVariable String keyword) {
+        return auctionProductService.findAllByproduct_nameOrproduct_descriptionOrTags(keyword);
+    }
+
     /*
     * Create an auction product
     * @return void
