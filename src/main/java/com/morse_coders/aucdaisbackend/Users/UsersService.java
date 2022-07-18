@@ -25,7 +25,6 @@ public class UsersService {
 
     public void createUser(Users user){
         Optional<Users> userOptional = usersRepository.findUsersByEmail(user.getEmail());
-
         if (userOptional.isPresent()) {
             throw new IllegalStateException("User with email " + user.getEmail() + " already exists");
         }
