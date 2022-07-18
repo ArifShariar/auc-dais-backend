@@ -1,5 +1,6 @@
 package com.morse_coders.aucdaisbackend.Users;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,7 +29,8 @@ public class UsersService {
         if (userOptional.isPresent()) {
             throw new IllegalStateException("User with email " + user.getEmail() + " already exists");
         }
-
+        String pwHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        user.setPassword(pwHash);
         usersRepository.save(user);
     }
 
