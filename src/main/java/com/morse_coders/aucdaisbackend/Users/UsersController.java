@@ -27,6 +27,11 @@ public class UsersController {
         usersService.createUser(user);
     }
 
+    @PostMapping(value = "/login")
+    public Users login(@RequestParam String email, @RequestParam String password) {
+        return usersService.login(email, password);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") Long id) {
         usersService.deleteUser(id);

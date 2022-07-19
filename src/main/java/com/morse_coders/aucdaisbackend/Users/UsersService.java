@@ -34,6 +34,10 @@ public class UsersService {
         usersRepository.save(user);
     }
 
+    public Boolean checkPassword(String password, String pwHash) {
+        return BCrypt.checkpw(password, pwHash);
+    }
+
     public void deleteUser(Long id){
         boolean isUserExists = usersRepository.existsById(id);
 
@@ -55,5 +59,16 @@ public class UsersService {
             }
             user.setEmail(email);
         }
+    }
+
+    public Users login(String email, String password) {
+        Optional<Users> userOptional = usersRepository.findUsersByEmail(email);
+        if (userOptional.isPresent()) {
+            Users user = userOptional.get();
+            if (checkPassword(password, user.getPassword())) {
+                return user;
+            }
+        }
+        return null;
     }
 }
