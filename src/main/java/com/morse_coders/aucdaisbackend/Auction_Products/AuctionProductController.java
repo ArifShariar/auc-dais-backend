@@ -83,6 +83,8 @@ public class AuctionProductController {
         auctionProduct.setAddress(address);
         auctionProduct.setOnline(false);
         auctionProduct.setApproved(false);
+        auctionProduct.setOngoing(false);
+        auctionProduct.setSold(false);
 
         // convert auction_start_date and auction_end_date to Date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

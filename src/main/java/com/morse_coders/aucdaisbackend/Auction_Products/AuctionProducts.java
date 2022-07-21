@@ -52,6 +52,10 @@ public class AuctionProducts {
 
     private Boolean isApproved;
 
+    private Boolean isSold;
+
+    private Boolean isOngoing;
+
     public AuctionProducts() {}
 
 
@@ -167,5 +171,21 @@ public class AuctionProducts {
 
     public void setApproved(Boolean approved) {
         isApproved = approved;
+    }
+
+    public Boolean getSold() {
+        return isSold;
+    }
+
+    public void setSold(Boolean sold) {
+        isSold = sold;
+    }
+
+    public Boolean getOngoing() {
+        return isOngoing;
+    }
+
+    public void setOngoing(Boolean ongoing) {
+        isOngoing = ongoing;
     }
 }
