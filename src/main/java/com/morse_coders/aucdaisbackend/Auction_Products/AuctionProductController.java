@@ -112,6 +112,14 @@ public class AuctionProductController {
 
     }
 
+    @PutMapping("/update/max_bid/{auction_id}")
+    public void updateMaxBid(@PathVariable String auction_id, @RequestParam String user_id, @RequestParam String max_bid){
+        Long id_auction = Long.parseLong(auction_id);
+        Long id_user = Long.parseLong(user_id);
+        double bid_max = Double.parseDouble(max_bid);
+        auctionProductService.update_max_bid(id_auction, id_user, bid_max);
+
+    }
     @DeleteMapping("/delete/{id}")
     public void deleteAuctionProduct(@PathVariable String id) {
         auctionProductService.deleteAuctionProduct(Long.parseLong(id));
