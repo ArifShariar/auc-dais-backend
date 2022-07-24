@@ -61,12 +61,24 @@ public class UsersService {
         }
     }
 
-    public Users login(String email, String password) {
+    public Users login(Users user) {
+        String email = user.getEmail();
+        String password = user.getPassword();
+
+        System.out.println("Here we have what in the login");
+        System.out.println("The email is : " + email);
+        System.out.println("The password is : " + password);
+
         Optional<Users> userOptional = usersRepository.findUsersByEmail(email);
         if (userOptional.isPresent()) {
-            Users user = userOptional.get();
+            user = userOptional.get();
             if (checkPassword(password, user.getPassword())) {
+                System.out.println("User password from database is: " + user.getPassword());
+                System.out.println("password from frontend is: " + password);
+                System.out.println("The password matches");
                 return user;
+            } else {
+                System.out.println("The passwords are not same");
             }
         }
         return null;

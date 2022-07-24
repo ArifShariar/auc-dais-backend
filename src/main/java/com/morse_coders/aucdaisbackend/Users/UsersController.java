@@ -22,14 +22,14 @@ public class UsersController {
         return usersService.getAllUsers();
     }
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/signup")
     public void createUser(@RequestBody Users user) {
         usersService.createUser(user);
     }
 
     @PostMapping(value = "/login")
-    public Users login(@RequestParam String email, @RequestParam String password) {
-        return usersService.login(email, password);
+    public Users login(@RequestBody Users user) {
+        return usersService.login(user);
     }
 
     @DeleteMapping("/{id}")
