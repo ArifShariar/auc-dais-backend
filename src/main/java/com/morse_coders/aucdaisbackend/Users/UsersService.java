@@ -1,7 +1,11 @@
 package com.morse_coders.aucdaisbackend.Users;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -61,26 +65,19 @@ public class UsersService {
         }
     }
 
-    public Users login(Users user) {
+    public HttpEntity<Users> login(Users user) {
         String email = user.getEmail();
         String password = user.getPassword();
-
-        System.out.println("Here we have what in the login");
-        System.out.println("The email is : " + email);
-        System.out.println("The password is : " + password);
-
+        
         Optional<Users> userOptional = usersRepository.findUsersByEmail(email);
         if (userOptional.isPresent()) {
             user = userOptional.get();
             if (checkPassword(password, user.getPassword())) {
-                System.out.println("User password from database is: " + user.getPassword());
-                System.out.println("password from frontend is: " + password);
-                System.out.println("The password matches");
-                return user;
+                return new ResponseEntity<Users>(user, HttpStatus.OK);
             } else {
-                System.out.println("The passwords are not same");
+                return new ResponseEntity<Users>(user, HttpStatus.BAD_REQUEST);
             }
         }
-        return null;
+        return new ResponseEntity<Users>(user, HttpStatus.BAD_REQUEST);
     }
 }

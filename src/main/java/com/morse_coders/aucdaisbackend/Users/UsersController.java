@@ -1,6 +1,7 @@
 package com.morse_coders.aucdaisbackend.Users;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class UsersController {
     }
 
     @PostMapping(value = "/login")
-    public Users login(@RequestBody Users user) {
+    public HttpEntity<Users> login(@RequestBody Users user) {
         return usersService.login(user);
     }
 
