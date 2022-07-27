@@ -37,6 +37,10 @@ public class SavedAuctionService {
         Optional<AuctionProducts> auctionProduct = auctionProductRepository.findById(auctionId);
 
         if (user.isPresent() && auctionProduct.isPresent()) {
+            // check if same user saved the same product, if yes, return error
+            if (savedAuctionRepository.findByUserIdAndAuctionId(userId, auctionId) != null) {
+                throw new IllegalArgumentException("User already saved this product");
+            }
             savedAuctions.setUser(user.get());
             savedAuctions.setAuctionProduct(auctionProduct.get());
             savedAuctionRepository.save(savedAuctions);

@@ -27,4 +27,7 @@ public interface SavedAuctionRepository extends JpaRepository<SavedAuctions, Lon
         @Modifying
         @Query(value = "DELETE FROM saved_auctions WHERE user_id = ?1 AND auction_product_id = ?2", nativeQuery = true)
         void deleteSavedAuctionByUserIdAndAuctionProductId(Long userId, Long auctionId);
+
+        @Query(value = "SELECT * FROM saved_auctions WHERE user_id = ?1 AND auction_product_id = ?2", nativeQuery = true)
+        SavedAuctions findByUserIdAndAuctionId(Long userId, Long auctionId);
 }
