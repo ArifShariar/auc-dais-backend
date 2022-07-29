@@ -59,7 +59,7 @@ public class UsersService {
         emailDetails.setFrom("morse@coders.com");
         emailDetails.setReceiver(user.getEmail());
         emailDetails.setSubject("Confirm your account");
-        emailDetails.setBody("Please confirm your account by clicking the link: " + confirmationLink);
+        emailDetails.setBody(buildEmail(user.getFirstName(), confirmationLink));
         emailSender.send(emailDetails);
     }
 
