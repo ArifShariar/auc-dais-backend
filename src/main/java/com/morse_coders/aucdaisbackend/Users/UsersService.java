@@ -53,7 +53,7 @@ public class UsersService {
         ConfirmationToken confirmationToken = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String confirmationLink = "http://localhost:8080/confirm?token=" + token;
+        String confirmationLink = "http://localhost:8080/users/confirm?token=" + token;
 
         EmailDetails emailDetails = new EmailDetails();
         emailDetails.setFrom("morse@coders.com");

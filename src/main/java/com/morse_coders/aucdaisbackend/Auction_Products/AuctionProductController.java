@@ -1,17 +1,15 @@
 package com.morse_coders.aucdaisbackend.Auction_Products;
 
 import com.morse_coders.aucdaisbackend.Users.Users;
-import com.morse_coders.aucdaisbackend.Users.UsersRepository;
 import com.morse_coders.aucdaisbackend.Users.UsersService;
-import org.apache.catalina.User;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.ref.SoftReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
