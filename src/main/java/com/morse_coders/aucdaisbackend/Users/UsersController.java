@@ -33,6 +33,11 @@ public class UsersController {
         return usersService.login(user);
     }
 
+    @GetMapping(value = "/confirm")
+    public String confirm(@RequestParam("token") String token) {
+        return usersService.confirmToken(token);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") Long id) {
         usersService.deleteUser(id);

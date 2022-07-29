@@ -27,6 +27,9 @@ public class Users {
 
     private LocalDate dateOfBirth;
 
+
+    private Boolean isConfirmed = false;
+
     public Users() {
     }
 
@@ -115,16 +118,12 @@ public class Users {
         this.dateOfBirth = dateOfBirth;
     }
 
-    @Override
-    public String toString() {
-        return "Users{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                '}';
+    public Boolean getConfirmed() {
+        return isConfirmed;
     }
+
+    public void setConfirmed(Boolean confirmed) {
+        isConfirmed = confirmed;
+    }
+
 }
