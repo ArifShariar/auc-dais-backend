@@ -24,13 +24,18 @@ public class UsersController {
     }
 
     @PostMapping(value = "/signup")
-    public HttpEntity<Long> createUser(@RequestBody Users user) {
-        return usersService.createUser(user);
+    public void createUser(@RequestBody Users user) {
+        usersService.createUser(user);
     }
 
     @PostMapping(value = "/login")
     public HttpEntity<Users> login(@RequestBody Users user) {
         return usersService.login(user);
+    }
+
+    @GetMapping(value = "/confirm")
+    public String confirm(@RequestParam("token") String token) {
+        return usersService.confirmToken(token);
     }
 
     @DeleteMapping("/{id}")
