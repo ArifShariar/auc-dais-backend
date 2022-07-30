@@ -28,14 +28,16 @@ public class UsersService {
         return usersRepository.findById(id).orElse(null);
     }
 
-    public void createUser(Users user){
+    public HttpEntity<Long> createUser(Users user){
         Optional<Users> userOptional = usersRepository.findUsersByEmail(user.getEmail());
         if (userOptional.isPresent()) {
-            throw new IllegalStateException("User with email " + user.getEmail() + " already exists");
+            //throw new IllegalStateException("User with email " + user.getEmail() + " already exists");
+            return new ResponseEntity<Long>(user.getId(), HttpStatus.BAD_REQUEST);
         }
         String pwHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(pwHash);
         usersRepository.save(user);
+        return new ResponseEntity<Long>(user.getId(), HttpStatus.OK);
     }
 
     public Boolean checkPassword(String password, String pwHash) {
@@ -68,7 +70,7 @@ public class UsersService {
     public HttpEntity<Users> login(Users user) {
         String email = user.getEmail();
         String password = user.getPassword();
-        
+
         Optional<Users> userOptional = usersRepository.findUsersByEmail(email);
         if (userOptional.isPresent()) {
             user = userOptional.get();

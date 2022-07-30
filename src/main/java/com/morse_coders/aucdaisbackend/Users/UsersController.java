@@ -24,8 +24,8 @@ public class UsersController {
     }
 
     @PostMapping(value = "/signup")
-    public void createUser(@RequestBody Users user) {
-        usersService.createUser(user);
+    public HttpEntity<Long> createUser(@RequestBody Users user) {
+        return usersService.createUser(user);
     }
 
     @PostMapping(value = "/login")
