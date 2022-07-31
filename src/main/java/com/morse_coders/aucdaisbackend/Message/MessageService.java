@@ -1,6 +1,8 @@
 package com.morse_coders.aucdaisbackend.Message;
 
 
+import com.morse_coders.aucdaisbackend.Email.EmailDetails;
+import com.morse_coders.aucdaisbackend.Email.EmailSender;
 import com.morse_coders.aucdaisbackend.Users.Users;
 import com.morse_coders.aucdaisbackend.Users.UsersRepository;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,12 @@ public class MessageService {
     private final MessageRepository messageRepository;
     private final UsersRepository userRepository;
 
-    public MessageService(MessageRepository messageRepository, UsersRepository userRepository) {
+    private final EmailSender emailSender;
+
+    public MessageService(MessageRepository messageRepository, UsersRepository userRepository, EmailSender emailSender) {
         this.messageRepository = messageRepository;
         this.userRepository = userRepository;
+        this.emailSender = emailSender;
     }
 
     public List<Message> getMessage(Long senderId, Long receiverId) {
@@ -40,6 +45,16 @@ public class MessageService {
         Optional<Users> receiver = userRepository.findById(receiverId);
         sender.ifPresent(message::setSender);
         receiver.ifPresent(message::setReceiver);
+
+        EmailDetails emailDetails = new EmailDetails();
+
+        emailDetails.setReceiver(receiver.get().getEmail());
+        emailDetails.setFrom(sender.get().getEmail());
+        emailDetails.setSubject(sender.get().getFirstName() + " has sent you a message");
+        emailDetails.setBody(message.getMessage());
+        emailSender.send(emailDetails);
+
+
         return messageRepository.save(message);
     }
 
