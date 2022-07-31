@@ -1,6 +1,7 @@
 package com.morse_coders.aucdaisbackend.Token;
 
 
+import com.morse_coders.aucdaisbackend.Users.Users;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,14 @@ public class ConfirmationTokenService {
         confirmationTokenRepository.save(confirmationToken);
     }
 
+    public void updateConfirmationToken(ConfirmationToken confirmationToken) {
+        confirmationTokenRepository.save(confirmationToken);
+    }
+
+    public Optional<ConfirmationToken> getToken(Users user) {
+        return confirmationTokenRepository.findByUser(user);
+    }
+
     public Optional<ConfirmationToken> getToken(String token){
         return confirmationTokenRepository.findByToken(token);
     }
@@ -25,4 +34,5 @@ public class ConfirmationTokenService {
     public int setConfirmedAt(String token){
         return confirmationTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
     }
+
 }

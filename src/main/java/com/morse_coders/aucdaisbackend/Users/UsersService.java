@@ -66,7 +66,7 @@ public class UsersService {
 
 
     @Transactional
-    public String confirmToken(String token){
+    public HttpEntity<ConfirmationToken> confirmToken(String token){
         Optional<ConfirmationToken> confirmationTokenOptional = confirmationTokenService.getToken(token);
         if (confirmationTokenOptional.isEmpty()) {
             throw new IllegalStateException("Token " + token + " not found");
@@ -86,7 +86,8 @@ public class UsersService {
         user.setConfirmed(true);
 
 
-        return "Token Confirmed";
+        //return "Token Confirmed";
+        return new ResponseEntity<ConfirmationToken>(confirmationToken, HttpStatus.OK);
     }
 
     public Boolean checkPassword(String password, String pwHash) {
@@ -116,20 +117,36 @@ public class UsersService {
         }
     }
 
-    public HttpEntity<Users> login(Users user) {
+    public HttpEntity<ConfirmationToken> login(Users user) {
         String email = user.getEmail();
         String password = user.getPassword();
 
         Optional<Users> userOptional = usersRepository.findUsersByEmail(email);
+        String token = "12345"; //dummy
+        ConfirmationToken confirmationToken = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
         if (userOptional.isPresent()) {
             user = userOptional.get();
             if (checkPassword(password, user.getPassword())) {
-                return new ResponseEntity<Users>(user, HttpStatus.OK);
+                token = UUID.randomUUID().toString();
+                Optional<ConfirmationToken> ctokenOptional = confirmationTokenService.getToken(user);
+                if (ctokenOptional.isPresent()) {
+                    confirmationToken = ctokenOptional.get();
+                    confirmationToken.setToken(token);
+                    confirmationToken.setConfirmedAt(LocalDateTime.now());
+                    confirmationToken.setCreatedAt(LocalDateTime.now());
+                    confirmationToken.setExpiresAt(LocalDateTime.now().plusMinutes(15));
+                    confirmationTokenService.updateConfirmationToken(confirmationToken);
+                }
+                else {
+                    confirmationToken = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
+                    confirmationTokenService.saveConfirmationToken(confirmationToken);
+                }
+                return new ResponseEntity<ConfirmationToken>(confirmationToken, HttpStatus.OK);
             } else {
-                return new ResponseEntity<Users>(user, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<ConfirmationToken>(confirmationToken, HttpStatus.BAD_REQUEST);
             }
         }
-        return new ResponseEntity<Users>(user, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<ConfirmationToken>(confirmationToken, HttpStatus.BAD_REQUEST);
     }
 
 
