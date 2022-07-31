@@ -1,5 +1,6 @@
 package com.morse_coders.aucdaisbackend.Token;
 
+import com.morse_coders.aucdaisbackend.Users.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,7 @@ public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationT
     @Modifying
     @Query("UPDATE ConfirmationToken c SET c.confirmedAt = ?2 WHERE c.token = ?1")
     int updateConfirmedAt(String token, LocalDateTime confirmedAt);
+
+    @Query("FROM ConfirmationToken WHERE user = ?1")
+    Optional<ConfirmationToken> findByUser(Users user);
 }
