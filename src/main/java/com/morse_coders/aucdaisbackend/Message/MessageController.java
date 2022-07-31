@@ -1,7 +1,4 @@
 package com.morse_coders.aucdaisbackend.Message;
-
-
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,7 +30,7 @@ public class MessageController {
     }
 
     @GetMapping("get/sender/{senderId}/receiver/{receiverId}")
-    public Message getMessage(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
+    public List<Message> getMessage(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
         return messageService.getMessage(senderId, receiverId);
     }
 

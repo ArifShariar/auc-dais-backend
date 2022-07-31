@@ -18,8 +18,8 @@ public class MessageService {
         this.userRepository = userRepository;
     }
 
-    public Message getMessage(Long senderId, Long receiverId) {
-        return messageRepository.findMessageBySenderIdAndReceiverId(senderId, receiverId);
+    public List<Message> getMessage(Long senderId, Long receiverId) {
+        return messageRepository.findAllMessageBySenderIdAndReceiverId(senderId, receiverId);
     }
 
     public List<Message> getMessages(Long userId) {
