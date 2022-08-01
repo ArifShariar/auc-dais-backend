@@ -6,7 +6,7 @@ import com.morse_coders.aucdaisbackend.Users.Users;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "saved_auctions")
@@ -26,18 +26,18 @@ public class SavedAuctions {
 
     // date when the user saved the auction
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDateTime date;
 
     public SavedAuctions() {
     }
 
-    public SavedAuctions(Users user, AuctionProducts auctionProduct, Date date) {
+    public SavedAuctions(Users user, AuctionProducts auctionProduct, LocalDateTime date) {
         this.user = user;
         this.auctionProduct = auctionProduct;
         this.date = date;
     }
 
-    public SavedAuctions(Long id, Users user, AuctionProducts auctionProduct, Date date) {
+    public SavedAuctions(Long id, Users user, AuctionProducts auctionProduct, LocalDateTime date) {
         this.id = id;
         this.user = user;
         this.auctionProduct = auctionProduct;
@@ -68,11 +68,11 @@ public class SavedAuctions {
         this.auctionProduct = auctionProduct;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }
