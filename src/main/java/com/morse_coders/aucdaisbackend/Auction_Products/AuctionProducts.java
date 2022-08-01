@@ -33,7 +33,7 @@ public class AuctionProducts {
 
     private Double minimum_price;
 
-    private Double max_bid;
+    private Double max_bid = 0.0;
 
     private String photos;
 

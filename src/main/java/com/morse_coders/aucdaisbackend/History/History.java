@@ -6,7 +6,7 @@ import com.morse_coders.aucdaisbackend.Users.Users;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "history")
@@ -26,21 +26,21 @@ public class History {
 
     // date when the user put a bid on the auction
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date date;
+    private LocalDateTime date;
 
     private Double bid_amount;
 
     public History() {
     }
 
-    public History(Users user, AuctionProducts auctionProduct, Date date, Double bid_amount) {
+    public History(Users user, AuctionProducts auctionProduct, LocalDateTime date, Double bid_amount) {
         this.user = user;
         this.auctionProduct = auctionProduct;
         this.date = date;
         this.bid_amount = bid_amount;
     }
 
-    public History(Long id, Users user, AuctionProducts auctionProduct, Date date, Double bid_amount) {
+    public History(Long id, Users user, AuctionProducts auctionProduct, LocalDateTime date, Double bid_amount) {
         this.id = id;
         this.user = user;
         this.auctionProduct = auctionProduct;
@@ -72,11 +72,11 @@ public class History {
         this.auctionProduct = auctionProduct;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

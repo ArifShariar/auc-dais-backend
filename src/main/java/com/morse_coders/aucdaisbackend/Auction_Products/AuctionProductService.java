@@ -1,10 +1,13 @@
 package com.morse_coders.aucdaisbackend.Auction_Products;
 
+import com.morse_coders.aucdaisbackend.History.History;
+import com.morse_coders.aucdaisbackend.History.HistoryRepository;
 import com.morse_coders.aucdaisbackend.Users.Users;
 import com.morse_coders.aucdaisbackend.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -12,10 +15,12 @@ public class AuctionProductService {
     private final AuctionProductRepository auctionProductRepository;
     private final UsersRepository usersRepository;
 
+    private final HistoryRepository historyRepository;
     @Autowired
-    public AuctionProductService(AuctionProductRepository auctionProductRepository, UsersRepository usersRepository) {
+    public AuctionProductService(AuctionProductRepository auctionProductRepository, UsersRepository usersRepository, HistoryRepository historyRepository) {
         this.auctionProductRepository = auctionProductRepository;
         this.usersRepository = usersRepository;
+        this.historyRepository = historyRepository;
     }
 
     // Get all AuctionProducts
@@ -64,6 +69,11 @@ public class AuctionProductService {
             auctionProducts.setMax_bidder(user);
             auctionProducts.setMax_bid(max_bid);
             auctionProductRepository.save(auctionProducts);
+
+            History history = new History(user, auctionProducts, LocalDateTime.now(), max_bid);
+            historyRepository.save(history);
+
+
         }
         else{
             throw new IllegalStateException("Bid is too low");

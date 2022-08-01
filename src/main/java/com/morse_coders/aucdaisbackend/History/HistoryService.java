@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -69,7 +70,7 @@ public class HistoryService {
             history.setBid_amount(bid);
             history.setUser(user.get());
             history.setAuctionProduct(auctionProduct.get());
-            history.setDate(new Date());
+            history.setDate(LocalDateTime.now());
             historyRepository.save(history);
         }
         else{
