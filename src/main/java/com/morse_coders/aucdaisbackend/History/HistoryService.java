@@ -47,18 +47,46 @@ public class HistoryService {
                     return historyRepository.findAllByUserId(user.getId());
                 }
             }
+            else{
+                throw new RuntimeException("Token is expired / not valid");
+            }
         }
         return null;
     }
 
-    public List<History> getAllHistoryByUserIdAndAuctionProductId(Long userId, Long auctionProductId) {
-        return historyRepository.findHistoryByUserIdAndAuctionProductId(userId, auctionProductId);
+    public List<History> getAllHistoryByUserIdAndAuctionProductId(Long userId, Long auctionProductId, String token) {
+        Users user = usersRepository.findById(userId).isPresent() ? usersRepository.findById(userId).get() : null;
+        if (user!=null){
+            Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+            if (getUserToken.isPresent()) {
+                if (getUserToken.get().getToken().equals(token)) {
+                    return historyRepository.findHistoryByUserIdAndAuctionProductId(user.getId(), auctionProductId);
+                }
+            }
+
+            else{
+                throw new RuntimeException("Token is expired / not valid");
+            }
+        }
+        return null;
     }
 
-    public List<History> getAllHistoryByUserIdAndAuctionProductIdBeforeDate(Long userId, String date) {
+    public List<History> getAllHistoryByUserIdAndAuctionProductIdBeforeDate(Long userId, String date, String token) {
         try {
             Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            return historyRepository.findAllByUserIdAndDateBefore(userId, date1);
+            Users user = usersRepository.findById(userId).isPresent() ? usersRepository.findById(userId).get() : null;
+            if (user!=null){
+                Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+                if (getUserToken.isPresent()) {
+                    if (getUserToken.get().getToken().equals(token)) {
+                        return historyRepository.findAllByUserIdAndDateBefore(user.getId(), date1);
+                    }
+                }
+                else{
+                    throw new RuntimeException("Token is expired / not valid");
+                }
+            }
+            return null;
         } catch (ParseException e) {
             throw new RuntimeException("Can not format date");
         }
@@ -66,26 +94,49 @@ public class HistoryService {
 
     }
 
-    public List<History> getAllHistoryByUserIdAndAuctionProductIdAfterDate(Long userId, String date) {
+    public List<History> getAllHistoryByUserIdAndAuctionProductIdAfterDate(Long userId, String date, String token) {
         try {
             Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            return historyRepository.findAllByUserIdAndDateAfter(userId, date1);
+            Users user = usersRepository.findById(userId).isPresent() ? usersRepository.findById(userId).get() : null;
+            if (user!=null){
+                Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+                if (getUserToken.isPresent()) {
+                    if (getUserToken.get().getToken().equals(token)) {
+                        return historyRepository.findAllByUserIdAndDateAfter(user.getId(), date1);
+                    }
+                }
+                else{
+                    throw new RuntimeException("Token is expired / not valid");
+                }
+            }
+            return null;
         } catch (ParseException e) {
             throw new RuntimeException("Can not format date");
         }
     }
 
-    public void createHistory(Double bid, Long userId, Long auctionProductId) {
+    public void createHistory(Double bid, Long userId, Long auctionProductId, String token) {
         Optional<Users> user = usersRepository.findById(userId);
         Optional<AuctionProducts> auctionProduct = auctionProductRepository.findById(auctionProductId);
 
         if (user.isPresent() && auctionProduct.isPresent()) {
-            History history = new History();
-            history.setBid_amount(bid);
-            history.setUser(user.get());
-            history.setAuctionProduct(auctionProduct.get());
-            history.setDate(LocalDateTime.now());
-            historyRepository.save(history);
+            Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user.get(), LocalDateTime.now());
+
+            if (getUserToken.isPresent()) {
+                if (getUserToken.get().getToken().equals(token)) {
+                    History history = new History();
+                    history.setBid_amount(bid);
+                    history.setUser(user.get());
+                    history.setAuctionProduct(auctionProduct.get());
+                    history.setDate(LocalDateTime.now());
+                    historyRepository.save(history);
+                }
+            }
+            else {
+                throw new RuntimeException("Token is expired");
+            }
+
+
         }
         else{
             System.out.println("User or AuctionProduct not found");
@@ -93,11 +144,20 @@ public class HistoryService {
     }
 
 
-    public List<History> getHistoryByUserIdAndAuctionIdBetweenDates(Long userId, String startDate, String endDate) {
+    public List<History> getHistoryByUserIdAndAuctionIdBetweenDates(Long userId, String startDate, String endDate, String token) {
         try {
             Date startDate1 = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
             Date endDate1 = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
-            return historyRepository.findAllByUserIdAndDateBetween(userId, startDate1, endDate1);
+            Users user = usersRepository.findById(userId).isPresent() ? usersRepository.findById(userId).get() : null;
+            if (user!=null){
+                Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+                if (getUserToken.isPresent()) {
+                    if (getUserToken.get().getToken().equals(token)) {
+                        return historyRepository.findAllByUserIdAndDateBetween(user.getId(), startDate1, endDate1);
+                    }
+                }
+            }
+            return null;
         } catch (ParseException e) {
             throw new RuntimeException("Can not format date");
         }
