@@ -22,4 +22,7 @@ public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationT
 
     @Query("FROM ConfirmationToken WHERE user = ?1")
     Optional<ConfirmationToken> findByUser(Users user);
+
+    @Query("FROM ConfirmationToken WHERE user = ?1 AND expiresAt > ?2")
+    Optional<ConfirmationToken> findByUserAndExpiresAt(Users user, LocalDateTime now);
 }

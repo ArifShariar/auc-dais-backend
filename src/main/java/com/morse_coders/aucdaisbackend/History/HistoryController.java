@@ -21,8 +21,8 @@ public class HistoryController {
     }
 
     @GetMapping("get/user/{userId}")
-    public List<History> getHistoryByUserId(@PathVariable("userId") Long userId) {
-        return historyService.getAllHistoryByUserId(userId);
+    public List<History> getHistoryByUserId(@PathVariable("userId") Long userId, @RequestBody String token) {
+        return historyService.getAllHistoryByUserId(userId, token);
     }
 
     @GetMapping("get/user/{userId}/auction/{auctionId}")

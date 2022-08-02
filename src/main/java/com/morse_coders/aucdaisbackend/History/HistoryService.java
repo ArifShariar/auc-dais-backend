@@ -2,6 +2,8 @@ package com.morse_coders.aucdaisbackend.History;
 
 import com.morse_coders.aucdaisbackend.Auction_Products.AuctionProductRepository;
 import com.morse_coders.aucdaisbackend.Auction_Products.AuctionProducts;
+import com.morse_coders.aucdaisbackend.Token.ConfirmationToken;
+import com.morse_coders.aucdaisbackend.Token.ConfirmationTokenRepository;
 import com.morse_coders.aucdaisbackend.Users.Users;
 import com.morse_coders.aucdaisbackend.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +24,31 @@ public class HistoryService {
 
     private final AuctionProductRepository auctionProductRepository;
 
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+
     @Autowired
-    public HistoryService(HistoryRepository historyRepository, UsersRepository usersRepository, AuctionProductRepository auctionProductRepository) {
+    public HistoryService(HistoryRepository historyRepository, UsersRepository usersRepository, AuctionProductRepository auctionProductRepository, ConfirmationTokenRepository confirmationTokenRepository) {
         this.historyRepository = historyRepository;
         this.usersRepository = usersRepository;
         this.auctionProductRepository = auctionProductRepository;
+        this.confirmationTokenRepository = confirmationTokenRepository;
     }
 
     public List<History> getAllHistory() {
         return historyRepository.findAll();
     }
 
-    public List<History> getAllHistoryByUserId(Long userId) {
-        return historyRepository.findAllByUserId(userId);
+    public List<History> getAllHistoryByUserId(Long userId, String token) {
+        Users user = usersRepository.findById(userId).isPresent() ? usersRepository.findById(userId).get() : null;
+        if (user!=null){
+            Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+            if (getUserToken.isPresent()) {
+                if (getUserToken.get().getToken().equals(token)) {
+                    return historyRepository.findAllByUserId(user.getId());
+                }
+            }
+        }
+        return null;
     }
 
     public List<History> getAllHistoryByUserIdAndAuctionProductId(Long userId, Long auctionProductId) {
