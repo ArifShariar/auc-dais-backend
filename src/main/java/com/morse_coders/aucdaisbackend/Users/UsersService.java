@@ -2,6 +2,8 @@ package com.morse_coders.aucdaisbackend.Users;
 
 import com.morse_coders.aucdaisbackend.Email.EmailDetails;
 import com.morse_coders.aucdaisbackend.Email.EmailSender;
+import com.morse_coders.aucdaisbackend.Session.SessionToken;
+import com.morse_coders.aucdaisbackend.Session.SessionTokenService;
 import com.morse_coders.aucdaisbackend.Token.ConfirmationToken;
 import com.morse_coders.aucdaisbackend.Token.ConfirmationTokenService;
 import org.springframework.http.HttpEntity;
@@ -23,11 +25,14 @@ public class UsersService {
 
     private final ConfirmationTokenService confirmationTokenService;
 
+    private final SessionTokenService sessionTokenService;
+
     private final EmailSender emailSender;
 
-    public UsersService(UsersRepository usersRepository, ConfirmationTokenService confirmationTokenService, EmailSender emailSender) {
+    public UsersService(UsersRepository usersRepository, ConfirmationTokenService confirmationTokenService, SessionTokenService sessionTokenService, EmailSender emailSender) {
         this.usersRepository = usersRepository;
         this.confirmationTokenService = confirmationTokenService;
+        this.sessionTokenService = sessionTokenService;
         this.emailSender = emailSender;
     }
 
@@ -117,36 +122,35 @@ public class UsersService {
         }
     }
 
-    public HttpEntity<ConfirmationToken> login(Users user) {
+    public HttpEntity<SessionToken> login(Users user) {
         String email = user.getEmail();
         String password = user.getPassword();
 
         Optional<Users> userOptional = usersRepository.findUsersByEmail(email);
         String token = "12345"; //dummy
-        ConfirmationToken confirmationToken = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
+        SessionToken sessionToken = new SessionToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(60), user);
         if (userOptional.isPresent()) {
             user = userOptional.get();
             if (checkPassword(password, user.getPassword())) {
                 token = UUID.randomUUID().toString();
-                Optional<ConfirmationToken> ctokenOptional = confirmationTokenService.getToken(user);
-                if (ctokenOptional.isPresent()) {
-                    confirmationToken = ctokenOptional.get();
-                    confirmationToken.setToken(token);
-                    confirmationToken.setConfirmedAt(LocalDateTime.now());
-                    confirmationToken.setCreatedAt(LocalDateTime.now());
-                    confirmationToken.setExpiresAt(LocalDateTime.now().plusMinutes(15));
-                    confirmationTokenService.updateConfirmationToken(confirmationToken);
+                Optional<SessionToken> sessionTokenOptional = sessionTokenService.getToken(user);
+                if (sessionTokenOptional.isPresent()) {
+                    sessionToken = sessionTokenOptional.get();
+                    sessionToken.setToken(token);
+                    sessionToken.setCreatedAt(LocalDateTime.now());
+                    sessionToken.setExpiresAt(LocalDateTime.now().plusMinutes(60));
+                    sessionTokenService.saveSessionToken(sessionToken);
                 }
                 else {
-                    confirmationToken = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
-                    confirmationTokenService.saveConfirmationToken(confirmationToken);
+                    sessionToken = new SessionToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(60), user);
+                    sessionTokenService.saveSessionToken(sessionToken);
                 }
-                return new ResponseEntity<ConfirmationToken>(confirmationToken, HttpStatus.OK);
+                return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.OK);
             } else {
-                return new ResponseEntity<ConfirmationToken>(confirmationToken, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.BAD_REQUEST);
             }
         }
-        return new ResponseEntity<ConfirmationToken>(confirmationToken, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.BAD_REQUEST);
     }
 
 

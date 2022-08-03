@@ -2,6 +2,8 @@ package com.morse_coders.aucdaisbackend.History;
 
 import com.morse_coders.aucdaisbackend.Auction_Products.AuctionProductRepository;
 import com.morse_coders.aucdaisbackend.Auction_Products.AuctionProducts;
+import com.morse_coders.aucdaisbackend.Session.SessionToken;
+import com.morse_coders.aucdaisbackend.Session.SessionTokenRepository;
 import com.morse_coders.aucdaisbackend.Token.ConfirmationToken;
 import com.morse_coders.aucdaisbackend.Token.ConfirmationTokenRepository;
 import com.morse_coders.aucdaisbackend.Users.Users;
@@ -24,14 +26,14 @@ public class HistoryService {
 
     private final AuctionProductRepository auctionProductRepository;
 
-    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final SessionTokenRepository sessionTokenRepository;
 
     @Autowired
-    public HistoryService(HistoryRepository historyRepository, UsersRepository usersRepository, AuctionProductRepository auctionProductRepository, ConfirmationTokenRepository confirmationTokenRepository) {
+    public HistoryService(HistoryRepository historyRepository, UsersRepository usersRepository, AuctionProductRepository auctionProductRepository, SessionTokenRepository sessionTokenRepository) {
         this.historyRepository = historyRepository;
         this.usersRepository = usersRepository;
         this.auctionProductRepository = auctionProductRepository;
-        this.confirmationTokenRepository = confirmationTokenRepository;
+        this.sessionTokenRepository = sessionTokenRepository;
     }
 
     public List<History> getAllHistory() {
@@ -41,7 +43,7 @@ public class HistoryService {
     public List<History> getAllHistoryByUserId(Long userId, String token) {
         Users user = usersRepository.findById(userId).isPresent() ? usersRepository.findById(userId).get() : null;
         if (user!=null){
-            Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+            Optional<SessionToken> getUserToken = sessionTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
             if (getUserToken.isPresent()) {
                 if (getUserToken.get().getToken().equals(token)) {
                     return historyRepository.findAllByUserId(user.getId());
@@ -57,7 +59,7 @@ public class HistoryService {
     public List<History> getAllHistoryByUserIdAndAuctionProductId(Long userId, Long auctionProductId, String token) {
         Users user = usersRepository.findById(userId).isPresent() ? usersRepository.findById(userId).get() : null;
         if (user!=null){
-            Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+            Optional<SessionToken> getUserToken = sessionTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
             if (getUserToken.isPresent()) {
                 if (getUserToken.get().getToken().equals(token)) {
                     return historyRepository.findHistoryByUserIdAndAuctionProductId(user.getId(), auctionProductId);
@@ -76,7 +78,7 @@ public class HistoryService {
             Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
             Users user = usersRepository.findById(userId).isPresent() ? usersRepository.findById(userId).get() : null;
             if (user!=null){
-                Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+                Optional<SessionToken> getUserToken = sessionTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
                 if (getUserToken.isPresent()) {
                     if (getUserToken.get().getToken().equals(token)) {
                         return historyRepository.findAllByUserIdAndDateBefore(user.getId(), date1);
@@ -99,7 +101,7 @@ public class HistoryService {
             Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
             Users user = usersRepository.findById(userId).isPresent() ? usersRepository.findById(userId).get() : null;
             if (user!=null){
-                Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+                Optional<SessionToken> getUserToken = sessionTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
                 if (getUserToken.isPresent()) {
                     if (getUserToken.get().getToken().equals(token)) {
                         return historyRepository.findAllByUserIdAndDateAfter(user.getId(), date1);
@@ -120,7 +122,7 @@ public class HistoryService {
         Optional<AuctionProducts> auctionProduct = auctionProductRepository.findById(auctionProductId);
 
         if (user.isPresent() && auctionProduct.isPresent()) {
-            Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user.get(), LocalDateTime.now());
+            Optional<SessionToken> getUserToken = sessionTokenRepository.findByUserAndExpiresAt(user.get(), LocalDateTime.now());
 
             if (getUserToken.isPresent()) {
                 if (getUserToken.get().getToken().equals(token)) {
@@ -150,7 +152,7 @@ public class HistoryService {
             Date endDate1 = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
             Users user = usersRepository.findById(userId).isPresent() ? usersRepository.findById(userId).get() : null;
             if (user!=null){
-                Optional<ConfirmationToken> getUserToken = confirmationTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+                Optional<SessionToken> getUserToken = sessionTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
                 if (getUserToken.isPresent()) {
                     if (getUserToken.get().getToken().equals(token)) {
                         return historyRepository.findAllByUserIdAndDateBetween(user.getId(), startDate1, endDate1);

@@ -1,5 +1,6 @@
 package com.morse_coders.aucdaisbackend.Users;
 
+import com.morse_coders.aucdaisbackend.Session.SessionToken;
 import com.morse_coders.aucdaisbackend.Token.ConfirmationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -30,7 +31,7 @@ public class UsersController {
     }
 
     @PostMapping(value = "/login")
-    public HttpEntity<ConfirmationToken> login(@RequestBody Users user) {
+    public HttpEntity<SessionToken> login(@RequestBody Users user) {
         return usersService.login(user);
     }
 
