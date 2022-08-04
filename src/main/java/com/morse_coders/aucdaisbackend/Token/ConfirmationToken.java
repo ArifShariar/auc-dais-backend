@@ -2,8 +2,7 @@ package com.morse_coders.aucdaisbackend.Token;
 
 
 
-import com.morse_coders.aucdaisbackend.Users.Users;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.morse_coders.aucdaisbackend.Users.Users; 
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

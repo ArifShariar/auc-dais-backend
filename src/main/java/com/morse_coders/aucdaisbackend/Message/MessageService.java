@@ -7,6 +7,7 @@ import com.morse_coders.aucdaisbackend.Users.Users;
 import com.morse_coders.aucdaisbackend.Users.UsersRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +40,17 @@ public class MessageService {
         return messageRepository.findAll();
     }
 
+    public List<Message> sortAllMessages() {
+        List<Message> messages =  messageRepository.findAll();
+        Collections.sort(messages,new Comparator<Message>() {
+            @Override
+            public int compare(Message m1, Message m2) {
+                return m1.getDate().compareTo(m2.getDate());
+            }
+        });
+
+        return messages;
+    }
 
     public Message sendMessage(Message message, Long senderId, Long receiverId) {
         Optional<Users> sender = userRepository.findById(senderId);
