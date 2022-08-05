@@ -4,6 +4,7 @@ import com.morse_coders.aucdaisbackend.Users.Users;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -40,12 +41,10 @@ public class AuctionProducts {
     private Boolean isOnline;
 
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date auction_start_date;
+    private LocalDateTime auction_start_date;
 
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date auction_end_date;
+    private LocalDateTime auction_end_date;
 
 
     private String address;
@@ -141,19 +140,19 @@ public class AuctionProducts {
         this.photos = photos;
     }
 
-    public Date getAuction_start_date() {
+    public LocalDateTime getAuction_start_date() {
         return auction_start_date;
     }
 
-    public void setAuction_start_date(Date auction_start_date) {
+    public void setAuction_start_date(LocalDateTime auction_start_date) {
         this.auction_start_date = auction_start_date;
     }
 
-    public Date getAuction_end_date() {
+    public LocalDateTime getAuction_end_date() {
         return auction_end_date;
     }
 
-    public void setAuction_end_date(Date auction_end_date) {
+    public void setAuction_end_date(LocalDateTime auction_end_date) {
         this.auction_end_date = auction_end_date;
     }
 
