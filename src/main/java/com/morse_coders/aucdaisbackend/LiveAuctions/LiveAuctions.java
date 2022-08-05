@@ -7,12 +7,12 @@ import com.morse_coders.aucdaisbackend.Users.Users;
 import javax.persistence.*; 
 
 @Entity
-@Table(name = "saved_auctions")
+@Table(name = "live_auctions")
 
 public class LiveAuctions{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SequenceGenerator")
-    @SequenceGenerator(name = "SequenceGenerator", sequenceName = "saved_auctions_seq", allocationSize = 1)
+    @SequenceGenerator(name = "SequenceGenerator", sequenceName = "live_auctions_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne

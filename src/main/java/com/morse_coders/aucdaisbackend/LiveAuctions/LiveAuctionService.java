@@ -5,8 +5,8 @@ import com.morse_coders.aucdaisbackend.Auction_Products.AuctionProducts;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Date;
 
 @Service
 public class LiveAuctionService {
@@ -20,7 +20,9 @@ public class LiveAuctionService {
     public List<LiveAuctions> getAllLiveAuctions() {
         return liveAuctionRepository.findAll();
     }
-    public void createLiveAuctions(Date today) {
+
+
+    public void createLiveAuctions(LocalDateTime today) {
         liveAuctionRepository.deleteAll();
         List<AuctionProducts> auctionProducts = auctionProductRepository.findAll();
         for(AuctionProducts prod: auctionProducts){

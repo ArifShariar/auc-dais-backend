@@ -1,6 +1,7 @@
 package com.morse_coders.aucdaisbackend.LiveAuctions;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Date;
 
@@ -10,14 +11,13 @@ import java.util.Date;
 public class LiveAuctionController {
 
     private final LiveAuctionService liveAuctionService;
-    public LiveAuctionController(LiveAuctionService liveAuctionServce){
-        this.liveAuctionService = liveAuctionServce;
+    public LiveAuctionController(LiveAuctionService liveAuctionService){
+        this.liveAuctionService = liveAuctionService;
     }
     @GetMapping("get/all")
     public List<LiveAuctions> getAllLiveAuctions() {
-        Date today = new Date();
-        System.out.println("today is "+today);
-        liveAuctionService.createLiveAuctions(today);
+        System.out.println("today is "+ LocalDateTime.now());
+        liveAuctionService.createLiveAuctions(LocalDateTime.now());
         List<LiveAuctions> ret = liveAuctionService.getAllLiveAuctions();
         System.out.println("total live auctions "+ret.size());
         return ret;

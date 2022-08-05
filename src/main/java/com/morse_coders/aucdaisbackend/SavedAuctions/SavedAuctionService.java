@@ -5,6 +5,7 @@ import com.morse_coders.aucdaisbackend.Auction_Products.AuctionProductRepository
 import com.morse_coders.aucdaisbackend.Auction_Products.AuctionProducts;
 import com.morse_coders.aucdaisbackend.Users.Users;
 import com.morse_coders.aucdaisbackend.Users.UsersRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class SavedAuctionService {
 
     private final UsersRepository usersRepository;
 
-
+    @Autowired
     public SavedAuctionService(SavedAuctionRepository savedAuctionRepository, AuctionProductRepository auctionProductRepository, UsersRepository usersRepository) {
         this.savedAuctionRepository = savedAuctionRepository;
         this.auctionProductRepository = auctionProductRepository;
