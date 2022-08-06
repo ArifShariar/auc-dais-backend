@@ -55,6 +55,10 @@ public class AuctionProducts {
 
     private Boolean isOngoing;
 
+
+    private Boolean sentFailEmail;
+
+
     public AuctionProducts() {}
 
 
@@ -186,5 +190,13 @@ public class AuctionProducts {
 
     public void setOngoing(Boolean ongoing) {
         isOngoing = ongoing;
+    }
+
+    public Boolean getSentFailEmail() {
+        return sentFailEmail;
+    }
+
+    public void setSentFailEmail(Boolean sentFailEmail) {
+        this.sentFailEmail = sentFailEmail;
     }
 }

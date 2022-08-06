@@ -33,42 +33,34 @@ public class SimpleScheduler {
     @Scheduled(fixedRate = 1000*60)
     public void endAuctions() {
         List<AuctionProducts> auctionProducts = auctionProductRepository.getAllOngoingButNotSoldAuctions();
+        for (AuctionProducts product : auctionProducts){
+            // check if the auction end date is before the current date
+            if(product.getAuction_end_date().isBefore(LocalDateTime.now())){
+                if (product.getMax_bidder()!=null){
+                    product.setSold(true);
+                    auctionProductRepository.save(product);
 
-        for (AuctionProducts products: auctionProducts){
-            if(products.getAuction_end_date().compareTo(LocalDateTime.now())<0){
-                products.setOngoing(false);
-
-                if (products.getMax_bid() > products.getMinimum_price() && products.getMax_bidder()!=null){
-                    Users max_bidder = products.getMax_bidder();
-                    products.setOngoing(false);
-                    products.setSold(true);
-                    auctionProductRepository.save(products);
+                    // send email to the max bidder that the auction has ended
+                    Users user = product.getMax_bidder();
                     EmailDetails emailDetails = new EmailDetails();
-                    emailDetails.setReceiver(max_bidder.getEmail());
                     emailDetails.setFrom("morse@coders.com");
-                    emailDetails.setSubject("Auction "+products.getId() + "::" + products.getProduct_name() +" has ended");
-                    emailDetails.setBody("Dear "+max_bidder.getFirstName()+",\n\n" +
-                            "Congratulations! You have won the auction "+products.getId() + "::" + products.getProduct_name() +"\n\n" +
-                            "The winning bid was "+products.getMax_bid()+"\n\n" +
-                            "You can contact the seller at "+products.getOwner().getEmail()+"\n\n" +
-                            "Thank you for using AucDais");
+                    emailDetails.setReceiver(user.getEmail());
+                    emailDetails.setSubject("Auction "+ product.getProduct_name() + " has ended");
+                    emailDetails.setBody("The auction "+ product.getProduct_name() + " has ended. You have won the auction with the highest bid.");
                     emailSender.send(emailDetails);
                 }
-                else{
-                    // send the owner an email telling that the auction was not successful
-                    products.setOngoing(false);
-                    products.setSold(false);
-                    auctionProductRepository.save(products);
+                else if (!product.getSentFailEmail()){
+                    product.setSentFailEmail(true);
+                    auctionProductRepository.save(product);
+                    Users user = product.getOwner();
                     EmailDetails emailDetails = new EmailDetails();
-                    emailDetails.setReceiver(products.getOwner().getEmail());
                     emailDetails.setFrom("morse@coders.com");
-                    emailDetails.setSubject("Auction "+products.getId() + "::" + products.getProduct_name() +" has ended");
-                    emailDetails.setBody("Dear "+products.getOwner().getFirstName()+",\n\n" +
-                            "The auction "+products.getId() + "::" + products.getProduct_name() +" has ended without success because there were no bidders.\n\n" +
-                            "You can change the starting date and host the auction again.\n\n" +
-                            "Thank you for using AucDais");
+                    emailDetails.setReceiver(user.getEmail());
+                    emailDetails.setSubject("Auction "+ product.getProduct_name() + " has ended without success");
+                    emailDetails.setBody("The auction "+ product.getProduct_name() + " has ended without success. No one has bid on the auction.");
                     emailSender.send(emailDetails);
                 }
+
             }
         }
     }
@@ -76,6 +68,7 @@ public class SimpleScheduler {
     @Scheduled(fixedRate = 1000*60)
     public void setAuctionToLive(){
         List<AuctionProducts> auctionProducts = auctionProductRepository.getAllNotOngoingAuctions();
+
         for(AuctionProducts auctionProduct : auctionProducts){
             if(auctionProduct.getAuction_start_date().compareTo(LocalDateTime.now()) < 0){
                 auctionProduct.setOngoing(true);

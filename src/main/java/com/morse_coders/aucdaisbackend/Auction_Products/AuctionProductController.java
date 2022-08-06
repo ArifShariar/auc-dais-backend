@@ -82,6 +82,7 @@ public class AuctionProductController {
         auctionProduct.setApproved(false);
         auctionProduct.setOngoing(false);
         auctionProduct.setSold(false);
+        auctionProduct.setSentFailEmail(false);
 
         // convert auction_start_date and auction_end_date to Date
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -119,7 +120,7 @@ public class AuctionProductController {
     public void updateAuctionProduct(@PathVariable String id, @RequestParam(required = false) String product_name, @RequestParam(required = false) Boolean isOnline,
                                      @RequestParam (required = false) String product_description, @RequestParam(required = false) String tags, @RequestParam(required = false) Double minimum_price,
                                      @RequestParam(required = false) Double max_bid, @RequestParam(required = false) String photos, @RequestParam(required = false) String auction_start_date,
-                                     @RequestParam(required = false) String auction_end_date, @RequestParam(required = false) String address) {
+                                     @RequestParam(required = false) String auction_end_date, @RequestParam(required = false) String address, @RequestParam(required = false) Boolean failEmail) {
 
         AuctionProducts auctionProduct = auctionProductService.getAuctionProductById(Long.parseLong(id));
 
@@ -146,6 +147,10 @@ public class AuctionProductController {
             }
             if (photos!=null){
                 auctionProduct.setPhotos(photos);
+            }
+
+            if(failEmail!=null){
+                auctionProduct.setSentFailEmail(failEmail);
             }
 
 
