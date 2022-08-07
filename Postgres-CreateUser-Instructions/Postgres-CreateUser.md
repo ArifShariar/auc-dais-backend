@@ -43,7 +43,6 @@
     
     Change the method named “**peer**” to “**md5**”. the file will look like the below snippet.
     
-    ![postgres-config2.png](Postgres-CreateUser/postgres-config2.png)
     
     Now save and close the file.
     

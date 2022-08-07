@@ -18,7 +18,6 @@ public class SavedAuctionService {
 
     private final UsersRepository usersRepository;
 
-
     @Autowired
     public SavedAuctionService(SavedAuctionRepository savedAuctionRepository, AuctionProductRepository auctionProductRepository, UsersRepository usersRepository) {
         this.savedAuctionRepository = savedAuctionRepository;
