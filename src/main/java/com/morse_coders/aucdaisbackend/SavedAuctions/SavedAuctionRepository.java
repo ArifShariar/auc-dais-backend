@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -25,6 +26,7 @@ public interface SavedAuctionRepository extends JpaRepository<SavedAuctions, Lon
 
         // delete auction by user id and auction product id
         @Modifying
+        @Transactional
         @Query(value = "DELETE FROM saved_auctions WHERE user_id = ?1 AND auction_product_id = ?2", nativeQuery = true)
         void deleteSavedAuctionByUserIdAndAuctionProductId(Long userId, Long auctionId);
 
