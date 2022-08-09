@@ -1,6 +1,8 @@
 package com.morse_coders.aucdaisbackend.Message;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -32,6 +34,19 @@ public class MessageController {
     @GetMapping("get/sender/{senderId}/receiver/{receiverId}")
     public List<Message> getMessage(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
         return messageService.getMessage(senderId, receiverId);
+    }
+
+
+    @GetMapping("get/sender/{senderId}/receiver/{receiverId}/sorted")
+    public List<Message> getMessageSorted(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
+        return messageService.getMessageSorted(senderId, receiverId);
+    }
+
+    @Transactional
+    @Modifying
+    @PutMapping("mark_all_read/sender/{senderId}/receiver/{receiverId}")
+    public void markAllRead(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
+        messageService.markAllRead(senderId, receiverId);
     }
 
 
