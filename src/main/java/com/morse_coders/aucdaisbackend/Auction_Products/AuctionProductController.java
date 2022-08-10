@@ -59,7 +59,7 @@ public class AuctionProductController {
     * Create an auction product
     * @return void
      */
-    @PostMapping("/create")
+    @PostMapping(value = "/create")
     public void createAuctionProduct(@RequestParam String ownerId, @RequestParam String product_name, @RequestParam String product_description,
                                      @RequestParam String tags, @RequestParam String auction_start_date, @RequestParam String auction_end_date,
                                      @RequestParam String minimum_price, @RequestParam String photos, @RequestParam String address) {
