@@ -1,13 +1,18 @@
 package com.morse_coders.aucdaisbackend.Auction_Products;
 
+import com.morse_coders.aucdaisbackend.FileStorage.FileStorageService;
 import com.morse_coders.aucdaisbackend.Users.Users;
 import com.morse_coders.aucdaisbackend.Users.UsersService;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -17,9 +22,12 @@ public class AuctionProductController {
     private final AuctionProductService auctionProductService;
     private final UsersService usersService;
 
-    public AuctionProductController(AuctionProductService auctionProductService, UsersService usersService) {
+    private final FileStorageService fileStorageService;
+
+    public AuctionProductController(AuctionProductService auctionProductService, UsersService usersService, FileStorageService fileStorageService) {
         this.auctionProductService = auctionProductService;
         this.usersService = usersService;
+        this.fileStorageService = fileStorageService;
     }
 
     /*
@@ -59,10 +67,10 @@ public class AuctionProductController {
     * Create an auction product
     * @return void
      */
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/create", consumes = {MULTIPART_FORM_DATA_VALUE})
     public void createAuctionProduct(@RequestParam String ownerId, @RequestParam String product_name, @RequestParam String product_description,
                                      @RequestParam String tags, @RequestParam String auction_start_date, @RequestParam String auction_end_date,
-                                     @RequestParam String minimum_price, @RequestParam String photos, @RequestParam String address) {
+                                     @RequestParam String minimum_price, @RequestParam MultipartFile photos, @RequestParam String address) {
 
         // find user by ownerId
         Users user = usersService.getUserById(Long.parseLong(ownerId));
@@ -76,13 +84,23 @@ public class AuctionProductController {
         auctionProduct.setProduct_description(product_description);
         auctionProduct.setTags(tags);
         auctionProduct.setMinimum_price(Double.parseDouble(minimum_price));
-        auctionProduct.setPhotos(photos);
+
+        //auctionProduct.setPhotos(photos);
+
         auctionProduct.setAddress(address);
         auctionProduct.setOnline(false);
         auctionProduct.setApproved(false);
         auctionProduct.setOngoing(false);
         auctionProduct.setSold(false);
         auctionProduct.setSentFailEmail(false);
+
+        String fileName = fileStorageService.storeFile(photos);
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/files/")
+                .path(fileName)
+                .toUriString();
+
+        auctionProduct.setPhotos(fileDownloadUri);
 
         // convert auction_start_date and auction_end_date to Date
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
