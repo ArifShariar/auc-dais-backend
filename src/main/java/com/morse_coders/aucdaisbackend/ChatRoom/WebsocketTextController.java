@@ -1,5 +1,6 @@
 package com.morse_coders.aucdaisbackend.ChatRoom;
 
+import com.morse_coders.aucdaisbackend.ChatRoom.message.TextMessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -22,7 +23,7 @@ public class WebsocketTextController {
     @MessageMapping("/private-message")
     public TextMessageDTO recMessage(@Payload TextMessageDTO message){
         // If user wants to listen to private messages: user/username/private
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
+        simpMessagingTemplate.convertAndSendToUser(Long.toString(message.getSender().getId()),"/private",message);
         System.out.println(message.toString());
         return message;
     }
