@@ -40,6 +40,12 @@ public class UsersController {
         return usersService.confirmToken(token);
     }
 
+
+    @GetMapping(value = "/get/{id}")
+    public Users getUser(@PathVariable("id") Long id) {
+        return usersService.getUser(id);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") Long id) {
         usersService.deleteUser(id);

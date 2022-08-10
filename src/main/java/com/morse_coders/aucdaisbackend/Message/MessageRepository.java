@@ -1,6 +1,7 @@
 package com.morse_coders.aucdaisbackend.Message;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,13 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     @Query(value = "SELECT * FROM message WHERE sender_id = ?1 AND receiver_id = ?2", nativeQuery = true)
     List<Message> findAllMessageBySenderIdAndReceiverId(Long senderId, Long receiverId);
+
+    // SORT BY DATE
+    @Query(value = "SELECT * FROM message WHERE (sender_id = ?1 AND receiver_id = ?2) OR (sender_id = ?2 AND receiver_id = ?1) ORDER BY date", nativeQuery = true)
+    List<Message> findAllMessageBySenderIdOrReceiverIdSorted(Long senderId, Long receiverId);
+
+    // set message as read
+    @Modifying
+    @Query(value = "UPDATE message SET is_read = true WHERE (sender_id = ?1 AND receiver_id = ?2) OR (sender_id = ?2 AND receiver_id = ?1)", nativeQuery = true)
+    void markAllRead(Long senderId, Long receiverId);
 }

@@ -222,4 +222,8 @@ public class UsersService {
                 "\n" +
                 "</div></div>";
     }
+
+    public Users getUser(Long id) {
+        return usersRepository.findById(id).orElse(null);
+    }
 }
