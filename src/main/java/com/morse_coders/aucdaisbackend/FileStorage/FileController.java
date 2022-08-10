@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -22,7 +21,7 @@ public class FileController {
     @Autowired
     private FileStorageService fileStorageService;
 
-    @PutMapping
+    @PostMapping()
     public ResponseEntity<FileResponse> uploadFile(@RequestParam("file")MultipartFile file){
         String fileName = fileStorageService.storeFile(file);
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
