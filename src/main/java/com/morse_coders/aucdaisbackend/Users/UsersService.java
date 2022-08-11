@@ -3,6 +3,7 @@ package com.morse_coders.aucdaisbackend.Users;
 import com.morse_coders.aucdaisbackend.Email.EmailDetails;
 import com.morse_coders.aucdaisbackend.Email.EmailSender;
 import com.morse_coders.aucdaisbackend.Session.SessionToken;
+import com.morse_coders.aucdaisbackend.Session.SessionTokenRepository;
 import com.morse_coders.aucdaisbackend.Session.SessionTokenService;
 import com.morse_coders.aucdaisbackend.Token.ConfirmationToken;
 import com.morse_coders.aucdaisbackend.Token.ConfirmationTokenService;
@@ -14,10 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UsersService {
@@ -27,13 +25,16 @@ public class UsersService {
 
     private final SessionTokenService sessionTokenService;
 
+    private final SessionTokenRepository sessionTokenRepository;
+
     private final EmailSender emailSender;
 
-    public UsersService(UsersRepository usersRepository, ConfirmationTokenService confirmationTokenService, SessionTokenService sessionTokenService, EmailSender emailSender) {
+    public UsersService(UsersRepository usersRepository, ConfirmationTokenService confirmationTokenService, SessionTokenService sessionTokenService, SessionTokenRepository sessionTokenRepository, EmailSender emailSender) {
         this.usersRepository = usersRepository;
         this.confirmationTokenService = confirmationTokenService;
         this.sessionTokenService = sessionTokenService;
         this.emailSender = emailSender;
+        this.sessionTokenRepository = sessionTokenRepository;
     }
 
     public List<Users> getAllUsers() {
@@ -110,7 +111,7 @@ public class UsersService {
     }
 
     @Transactional
-    public void  updateUserEmail(Long id, String email){
+    public boolean updateUserEmail(Long id, String email){
         Users user = usersRepository.findById(id).orElseThrow(() -> new IllegalStateException("User with id " + id + " does not exist"));
 
         if (email!=null && email.length()>0 && !Objects.equals(user.getEmail(), email)) {
@@ -119,7 +120,9 @@ public class UsersService {
                 throw new IllegalStateException("User with email " + email + " already exists");
             }
             user.setEmail(email);
+            return true;
         }
+        return false;
     }
 
     public HttpEntity<SessionToken> login(Users user) {
@@ -151,6 +154,68 @@ public class UsersService {
             }
         }
         return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.BAD_REQUEST);
+    }
+
+    public HttpEntity<Users> updateUser(Users user, String token) {
+        Long uid = user.getId();
+        Optional<Users> userOptional = usersRepository.findById(uid);
+        if (userOptional.isPresent()) {
+            Users olduser = userOptional.get();
+            Optional<SessionToken> getUserToken = sessionTokenRepository.findByUserAndExpiresAt(olduser, LocalDateTime.now());
+            if (getUserToken.isPresent()) {
+                if (getUserToken.get().getToken().equals(token)) {
+                    if (!user.getPassword().isEmpty()) {
+                        String pwHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+                        user.setPassword(pwHash);
+                    } else user.setPassword(olduser.getPassword());
+
+                    if (user.getFirstName().isEmpty()) {
+                        user.setFirstName(olduser.getFirstName());
+                    }
+
+                    if (user.getLastName().isEmpty()) {
+                        user.setLastName(olduser.getLastName());
+                    }
+
+                    if (user.getAddress().isEmpty()) {
+                        user.setAddress(olduser.getAddress());
+                    }
+
+                    if (user.getPhoneNumber().isEmpty()) {
+                        user.setPhoneNumber(olduser.getPhoneNumber());
+                    }
+
+                    if (user.getDateOfBirth() == null) {
+                        user.setDateOfBirth(olduser.getDateOfBirth());
+                    }
+
+                    if (user.getImage().isEmpty()) {
+                        user.setImage(olduser.getImage());
+                    }
+
+                    if (!user.getEmail().isEmpty()) {
+                        if (updateUserEmail(uid, user.getEmail())) {
+                            System.out.println("New email exists");
+                            user.setConfirmed(olduser.getConfirmed());
+                            usersRepository.save(user);
+                            user.setPassword("");
+                            return new ResponseEntity<>(user, HttpStatus.OK);
+                        }
+                        return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST); //Email already exists
+                    }
+                    else {
+                        // email update field is empty
+                        System.out.println("New email does not exist");
+                        user.setEmail(olduser.getEmail());
+                        usersRepository.save(user);
+                        user.setPassword("");
+                        return new ResponseEntity<>(user, HttpStatus.OK);
+                    }
+                }
+                System.out.println("TOKENS ARE NOT EQUAL");
+            }
+        }
+        return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
     }
 
 
