@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +66,29 @@ public class MessageService {
 
     public List<Message> getMessageSorted(Long senderId, Long receiverId) {
         return messageRepository.findAllMessageBySenderIdOrReceiverIdSorted(senderId, receiverId);
+    }
+
+    public List<Message> findAllMessageSentOrReceivedSorted(Long senderId){
+        List<Message> messages = messageRepository.findAllMessageSentOrReceivedSorted(senderId);
+        List<Message> curatedList = new ArrayList<>();
+
+        for(int i=0;i<messages.size();i++){
+            if(curatedList.isEmpty()){
+                curatedList.add(messages.get(i));
+            }
+            else{
+                for(int j=0;j<curatedList.size();j++){
+
+                    if((curatedList.get(j).getReceiver().getId().equals(messages.get(i).getReceiver().getId()) && curatedList.get(j).getSender().getId().equals(messages.get(i).getSender().getId()))
+                            || (curatedList.get(j).getReceiver().getId().equals(messages.get(i).getSender().getId()) && curatedList.get(j).getSender().getId().equals(messages.get(i).getReceiver().getId()))){
+                        break;
+                    } else {
+                        curatedList.add(messages.get(i));
+                    }
+                }
+            }
+        }
+        return curatedList;
     }
 
     @Transactional

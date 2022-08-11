@@ -21,6 +21,10 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Query(value = "SELECT * FROM message WHERE (sender_id = ?1 AND receiver_id = ?2) OR (sender_id = ?2 AND receiver_id = ?1) ORDER BY date", nativeQuery = true)
     List<Message> findAllMessageBySenderIdOrReceiverIdSorted(Long senderId, Long receiverId);
 
+    // set all received or sent messages by a user sorted by date
+    @Query(value = "SELECT * FROM message WHERE sender_id = ?1 OR receiver_id = ?1 ORDER BY date desc ", nativeQuery = true)
+    List<Message> findAllMessageSentOrReceivedSorted(Long senderId);
+
     // set message as read
     @Modifying
     @Query(value = "UPDATE message SET is_read = true WHERE (sender_id = ?1 AND receiver_id = ?2) OR (sender_id = ?2 AND receiver_id = ?1)", nativeQuery = true)
