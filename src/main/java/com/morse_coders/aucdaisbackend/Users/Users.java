@@ -27,8 +27,9 @@ public class Users {
 
     private LocalDate dateOfBirth;
 
-
     private Boolean isConfirmed = false;
+
+    private String image;
 
     public Users() {
     }
@@ -52,6 +53,17 @@ public class Users {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Users(String firstName, String lastName, String email, String password, String phoneNumber, String address, LocalDate dateOfBirth, String image) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.image = image;
     }
 
     public Long getId() {
@@ -126,4 +138,20 @@ public class Users {
         isConfirmed = confirmed;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        String str = "Firstname: " + this.getFirstName() + "\n";
+        str += "Lastname: " + this.getLastName() + "\n";
+        str += "Email: " + this.getEmail() + "\n";
+        str += "Imagepath: " + this.getImage() + "\n";
+        return str;
+    }
 }

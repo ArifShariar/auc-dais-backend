@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -40,6 +42,10 @@ public class UsersController {
         return usersService.confirmToken(token);
     }
 
+    @PostMapping(value = "/update/{token}")
+    public HttpEntity<Users> updateUser(@PathVariable("token") String token, @RequestBody Users user) {
+        return usersService.updateUser(user, token);
+    }
 
     @GetMapping(value = "/get/{id}")
     public Users getUser(@PathVariable("id") Long id) {
