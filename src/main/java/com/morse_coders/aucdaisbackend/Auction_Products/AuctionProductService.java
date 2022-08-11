@@ -82,4 +82,8 @@ public class AuctionProductService {
 
 
     }
+
+    public List<AuctionProducts> getAllOnGoingAuctions(long user_id) {
+        return auctionProductRepository.getAllOnGoingAuctions(user_id);
+    }
 }

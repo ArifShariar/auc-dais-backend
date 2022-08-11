@@ -23,4 +23,7 @@ public interface AuctionProductRepository extends JpaRepository<AuctionProducts,
     // get auctions that are not finished and is_ongoing set to true
     @Query(value = "SELECT * FROM auction_products WHERE is_ongoing = true AND is_sold = false", nativeQuery = true)
     List<AuctionProducts> getAllOngoingButNotSoldAuctions();
+
+    @Query(value = "SELECT * FROM auction_products WHERE is_ongoing = true AND is_sold = false AND owner_id != ?1", nativeQuery = true)
+    List<AuctionProducts> getAllOnGoingAuctions(Long ownerId);
 }
