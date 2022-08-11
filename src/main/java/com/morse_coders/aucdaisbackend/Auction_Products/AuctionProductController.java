@@ -67,10 +67,10 @@ public class AuctionProductController {
     * Create an auction product
     * @return void
      */
-    @PostMapping(value = "/create", consumes = {MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/create")
     public void createAuctionProduct(@RequestParam String ownerId, @RequestParam String product_name, @RequestParam String product_description,
                                      @RequestParam String tags, @RequestParam String auction_start_date, @RequestParam String auction_end_date,
-                                     @RequestParam String minimum_price, @RequestParam MultipartFile photos, @RequestParam String address) {
+                                     @RequestParam String minimum_price, @RequestParam String photos, @RequestParam String address) {
 
         // find user by ownerId
         Users user = usersService.getUserById(Long.parseLong(ownerId));
@@ -84,8 +84,7 @@ public class AuctionProductController {
         auctionProduct.setProduct_description(product_description);
         auctionProduct.setTags(tags);
         auctionProduct.setMinimum_price(Double.parseDouble(minimum_price));
-
-        //auctionProduct.setPhotos(photos);
+        auctionProduct.setPhotos(photos);
 
         auctionProduct.setAddress(address);
         auctionProduct.setOnline(false);
@@ -94,13 +93,13 @@ public class AuctionProductController {
         auctionProduct.setSold(false);
         auctionProduct.setSentFailEmail(false);
 
-        String fileName = fileStorageService.storeFile(photos);
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/files/")
-                .path(fileName)
-                .toUriString();
-
-        auctionProduct.setPhotos(fileDownloadUri);
+//        String fileName = fileStorageService.storeFile(photos);
+//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("/files/")
+//                .path(fileName)
+//                .toUriString();
+//
+//        auctionProduct.setPhotos(fileDownloadUri);
 
         // convert auction_start_date and auction_end_date to Date
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -115,10 +114,6 @@ public class AuctionProductController {
         auctionProduct.setAuction_end_date(endDate);
 
         auctionProductService.createAuctionProduct(auctionProduct);
-
-
-
-
     }
 
     @PutMapping("/update/max_bid/{auction_id}")
