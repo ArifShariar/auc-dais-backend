@@ -39,6 +39,10 @@ public class AuctionProductController {
         return auctionProductService.getAllAuctionProducts();
     }
 
+
+    @GetMapping("/all/ongoing/user/{user_id}")
+    public List<AuctionProducts> getAllOnGoingAuctions(@PathVariable("user_id") String user_id){ return auctionProductService.getAllOnGoingAuctions(Long.parseLong(user_id));}
+
     /*
     * Get all AuctionProducts of a specific user
     * @return List<AuctionProducts>
