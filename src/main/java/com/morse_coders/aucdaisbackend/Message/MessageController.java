@@ -42,6 +42,11 @@ public class MessageController {
         return messageService.getMessageSorted(senderId, receiverId);
     }
 
+    @GetMapping("get/all/user/{userId}")
+    public List<Message> getAllMessagesByUserId(@PathVariable("userId") Long userId) {
+        return messageService.findAllMessageSentOrReceivedSorted(userId);
+    }
+
     @Transactional
     @Modifying
     @PutMapping("mark_all_read/sender/{senderId}/receiver/{receiverId}")
