@@ -45,6 +45,11 @@ public class HistoryController {
         return historyService.getHistoryByUserIdAndAuctionIdBetweenDates(userId, startDate, endDate, token);
     }
 
+    @GetMapping("get/last/user/{userId}/auction/{auctionId}/{token}")
+    public History getLastHistoryByUserIdAndAuctionId(@PathVariable("userId") Long userId, @PathVariable("auctionId") Long auctionId, @PathVariable("token") String token) {
+        return historyService.getLastHistoryByUserIdAndAuctionProductId(userId, auctionId, token);
+    }
+
 
     @PostMapping("/create/user/{userId}/auction/{auctionId}/bid/{bid}/{token}")
     public void createHistory(@PathVariable("userId") Long userId, @PathVariable("auctionId") Long auctionId, @PathVariable("bid") Double bid, @PathVariable("token") String token) {
