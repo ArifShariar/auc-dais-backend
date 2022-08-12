@@ -8,6 +8,8 @@ import com.morse_coders.aucdaisbackend.Email.EmailSender;
 import com.morse_coders.aucdaisbackend.SavedAuctions.SavedAuctionRepository;
 import com.morse_coders.aucdaisbackend.Users.Users;
 import com.morse_coders.aucdaisbackend.Users.UsersRepository;
+import com.morse_coders.aucdaisbackend.WonAuctions.WonAuctions;
+import com.morse_coders.aucdaisbackend.WonAuctions.WonAuctionsRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +23,15 @@ public class SimpleScheduler {
 
     private final AuctionProductRepository auctionProductRepository;
     private final UsersRepository usersRepository;
+
+    private final WonAuctionsRepository wonAuctionsRepository;
     private final EmailSender emailSender;
 
-    public SimpleScheduler(SavedAuctionRepository savedAuctionRepository, AuctionProductRepository auctionProductRepository, UsersRepository usersRepository, EmailSender emailSender) {
+    public SimpleScheduler(SavedAuctionRepository savedAuctionRepository, AuctionProductRepository auctionProductRepository, UsersRepository usersRepository, WonAuctionsRepository wonAuctionsRepository, EmailSender emailSender) {
         this.savedAuctionRepository = savedAuctionRepository;
         this.auctionProductRepository = auctionProductRepository;
         this.usersRepository = usersRepository;
+        this.wonAuctionsRepository = wonAuctionsRepository;
         this.emailSender = emailSender;
     }
 
@@ -42,6 +47,17 @@ public class SimpleScheduler {
 
                     // send email to the max bidder that the auction has ended
                     Users user = product.getMax_bidder();
+
+                    // create a won auction object
+                    WonAuctions wonAuctions = new WonAuctions();
+                    wonAuctions.setUser(user);
+                    wonAuctions.setAuctionProduct(product);
+                    wonAuctions.setPaid(false);
+                    wonAuctions.setBid(product.getMax_bid());
+                    wonAuctions.setPayment_date(null);
+                    wonAuctions.setPaymentMethod(null);
+                    wonAuctionsRepository.save(wonAuctions);
+
                     EmailDetails emailDetails = new EmailDetails();
                     emailDetails.setFrom("morse@coders.com");
                     emailDetails.setReceiver(user.getEmail());
