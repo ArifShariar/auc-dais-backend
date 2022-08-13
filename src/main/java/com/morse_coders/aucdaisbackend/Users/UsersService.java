@@ -122,6 +122,9 @@ public class UsersService {
             user.setEmail(email);
             return true;
         }
+        else if (Objects.equals(user.getEmail(), email)){
+            return true;
+        }
         return false;
     }
 
