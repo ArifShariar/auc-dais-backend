@@ -22,7 +22,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findAllMessageBySenderIdOrReceiverIdSorted(Long senderId, Long receiverId);
 
     // set all received or sent messages by a user sorted by date
-    @Query(value = "SELECT * FROM message WHERE sender_id = ?1 OR receiver_id = ?1 ORDER BY date desc ", nativeQuery = true)
+    @Query(value = "SELECT * FROM message WHERE sender_id = ?1 OR receiver_id = ?1 ORDER BY date desc", nativeQuery = true)
     List<Message> findAllMessageSentOrReceivedSorted(Long senderId);
 
     // set message as read

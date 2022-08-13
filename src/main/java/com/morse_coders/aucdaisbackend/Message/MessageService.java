@@ -79,8 +79,12 @@ public class MessageService {
             else{
                 for(int j=0;j<curatedList.size();j++){
 
-                    if((curatedList.get(j).getReceiver().getId().equals(messages.get(i).getReceiver().getId()) && curatedList.get(j).getSender().getId().equals(messages.get(i).getSender().getId()))
-                            || (curatedList.get(j).getReceiver().getId().equals(messages.get(i).getSender().getId()) && curatedList.get(j).getSender().getId().equals(messages.get(i).getReceiver().getId()))){
+                    if((curatedList.get(j).getReceiver().getId().equals(messages.get(i).getReceiver().getId()) &&
+                            curatedList.get(j).getSender().getId().equals(messages.get(i).getSender().getId()))
+
+
+                            || (curatedList.get(j).getReceiver().getId().equals(messages.get(i).getSender().getId()) &&
+                            curatedList.get(j).getSender().getId().equals(messages.get(i).getReceiver().getId()))){
                         break;
                     } else {
                         curatedList.add(messages.get(i));

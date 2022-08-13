@@ -2,10 +2,11 @@ package com.morse_coders.aucdaisbackend.RatingReview;
 
 import com.morse_coders.aucdaisbackend.Auction_Products.AuctionProducts;
 import com.morse_coders.aucdaisbackend.Users.Users;
-import org.springframework.format.annotation.DateTimeFormat;
+
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table
@@ -30,24 +31,21 @@ public class RatingReview {
 
     private Integer rating;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDateTime date = LocalDateTime.now();
 
     public RatingReview() {
     }
 
-    public RatingReview(Users user, AuctionProducts auctionProduct, String review, Integer rating, Date date) {
+    public RatingReview(Users user, AuctionProducts auctionProduct, String review, Integer rating) {
         this.user = user;
         this.auctionProduct = auctionProduct;
         this.review = review;
         this.rating = rating;
-        this.date = date;
     }
 
-    public RatingReview(String review, Integer rating, Date date) {
+    public RatingReview(String review, Integer rating) {
         this.review = review;
         this.rating = rating;
-        this.date = date;
     }
 
     public Long getId() {
@@ -90,11 +88,11 @@ public class RatingReview {
         this.rating = rating;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
