@@ -62,6 +62,11 @@ public class AuctionProductController {
         return auctionProductService.getRandomAuctionProduct(Long.parseLong(user_id));
     }
 
+    @GetMapping("/auction/random")
+    public List<AuctionProducts> getRandomAuctionProduct() {
+        return auctionProductService.getRandomAuctionProduct();
+    }
+
     @GetMapping("/search/{keyword}")
     public List<AuctionProducts> findAllByproduct_nameOrproduct_descriptionOrTags(@PathVariable String keyword) {
         return auctionProductService.findAllByproduct_nameOrproduct_descriptionOrTags(keyword);
