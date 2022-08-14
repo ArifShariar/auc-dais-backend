@@ -1,7 +1,6 @@
 package com.morse_coders.aucdaisbackend.Users;
 
 import com.morse_coders.aucdaisbackend.Session.SessionToken;
-import com.morse_coders.aucdaisbackend.Token.ConfirmationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +37,7 @@ public class UsersController {
     }
 
     @GetMapping(value = "/confirm")
-    public HttpEntity<ConfirmationToken> confirm(@RequestParam("token") String token) {
+    public HttpEntity<String> confirm(@RequestParam("token") String token) {
         return usersService.confirmToken(token);
     }
 
