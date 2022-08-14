@@ -18,4 +18,7 @@ public interface WonAuctionsRepository extends JpaRepository<WonAuctions, Long> 
 
     @Query(value = "SELECT * FROM won_auctions WHERE user_id = ?1 AND is_paid = true", nativeQuery = true)
     List<WonAuctions> getAllWonAndPaidAuctions(Long user_id);
+
+    @Query(value = "SELECT * FROM won_auctions WHERE user_id = ?1 AND auction_product_id = ?2", nativeQuery = true)
+    WonAuctions getWonAuctionByUserIdAndAuctionId(long userId, long auctionId);
 }
