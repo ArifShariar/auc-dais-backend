@@ -72,23 +72,28 @@ public class MessageService {
         List<Message> messages = messageRepository.findAllMessageSentOrReceivedSorted(senderId);
         List<Message> curatedList = new ArrayList<>();
 
+        System.out.println("It is different message: ");
+        System.out.println(0 + " " + messages.get(0).getMessage() + "\n\n");
         for(int i=0;i<messages.size();i++){
             if(curatedList.isEmpty()){
                 curatedList.add(messages.get(i));
             }
             else{
-                for(int j=0;j<curatedList.size();j++){
+                boolean alreadyin = false;
+                for(int j=0;j<curatedList.size();j++) {
 
-                    if((curatedList.get(j).getReceiver().getId().equals(messages.get(i).getReceiver().getId()) &&
+                    if ((curatedList.get(j).getReceiver().getId().equals(messages.get(i).getReceiver().getId()) &&
                             curatedList.get(j).getSender().getId().equals(messages.get(i).getSender().getId()))
 
 
                             || (curatedList.get(j).getReceiver().getId().equals(messages.get(i).getSender().getId()) &&
-                            curatedList.get(j).getSender().getId().equals(messages.get(i).getReceiver().getId()))){
+                            curatedList.get(j).getSender().getId().equals(messages.get(i).getReceiver().getId()))) {
+                        alreadyin = true;
                         break;
-                    } else {
-                        curatedList.add(messages.get(i));
                     }
+                }
+                if (!alreadyin) {
+                    curatedList.add(messages.get(i));
                 }
             }
         }
