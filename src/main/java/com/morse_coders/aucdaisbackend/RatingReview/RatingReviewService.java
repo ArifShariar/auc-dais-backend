@@ -53,7 +53,7 @@ public class RatingReviewService {
             ratingReviewRepository.save(newRatingReview);
         }
         else{
-            System.out.println("User or product not found");
+            System.out.println("User or product or seller not found");
         }
     }
 
