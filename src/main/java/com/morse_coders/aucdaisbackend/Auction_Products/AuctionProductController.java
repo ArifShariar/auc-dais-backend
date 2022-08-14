@@ -101,8 +101,6 @@ public class AuctionProductController {
         auctionProduct.setPhotos(photos);
 
         auctionProduct.setAddress(address);
-        auctionProduct.setOnline(false);
-        auctionProduct.setApproved(false);
         auctionProduct.setOngoing(false);
         auctionProduct.setSold(false);
         auctionProduct.setSentFailEmail(false);
@@ -137,7 +135,7 @@ public class AuctionProductController {
     }
 
     @PutMapping("/update/{id}")
-    public void updateAuctionProduct(@PathVariable String id, @RequestParam(required = false) String product_name, @RequestParam(required = false) Boolean isOnline,
+    public void updateAuctionProduct(@PathVariable String id, @RequestParam(required = false) String product_name,
                                      @RequestParam (required = false) String product_description, @RequestParam(required = false) String tags, @RequestParam(required = false) Double minimum_price,
                                      @RequestParam(required = false) Double max_bid, @RequestParam(required = false) String photos, @RequestParam(required = false) String auction_start_date,
                                      @RequestParam(required = false) String auction_end_date, @RequestParam(required = false) String address, @RequestParam(required = false) Boolean failEmail) {
@@ -150,9 +148,7 @@ public class AuctionProductController {
             if (product_name!=null){
                 auctionProduct.setProduct_name(product_name);
             }
-            if (isOnline!=null){
-                auctionProduct.setOnline(isOnline);
-            }
+
             if (product_description!=null){
                 auctionProduct.setProduct_description(product_description);
             }

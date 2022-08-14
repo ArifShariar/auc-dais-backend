@@ -38,9 +38,6 @@ public class AuctionProducts {
 
     private String photos;
 
-    private Boolean isOnline;
-
-
     private LocalDateTime auction_start_date;
 
 
@@ -49,7 +46,6 @@ public class AuctionProducts {
 
     private String address;
 
-    private Boolean isApproved;
 
     private Boolean isSold;
 
@@ -62,15 +58,6 @@ public class AuctionProducts {
     public AuctionProducts() {}
 
 
-
-
-    public Boolean getOnline() {
-        return isOnline;
-    }
-
-    public void setOnline(Boolean online) {
-        isOnline = online;
-    }
 
     public Long getId() {
         return id;
@@ -168,13 +155,6 @@ public class AuctionProducts {
         this.address = address;
     }
 
-    public Boolean getApproved() {
-        return isApproved;
-    }
-
-    public void setApproved(Boolean approved) {
-        isApproved = approved;
-    }
 
     public Boolean getSold() {
         return isSold;
