@@ -26,4 +26,7 @@ public interface AuctionProductRepository extends JpaRepository<AuctionProducts,
 
     @Query(value = "SELECT * FROM auction_products WHERE is_ongoing = true AND is_sold = false AND owner_id != ?1", nativeQuery = true)
     List<AuctionProducts> getAllOnGoingAuctions(Long ownerId);
+
+    @Query(value = "SELECT * FROM auction_products WHERE is_sold = false AND owner_id != ?1 ORDER BY random() LIMIT 5", nativeQuery = true)
+    List<AuctionProducts> getRandomAuctionProduct(Long user_id);
 }

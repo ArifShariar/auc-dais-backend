@@ -86,4 +86,8 @@ public class AuctionProductService {
     public List<AuctionProducts> getAllOnGoingAuctions(long user_id) {
         return auctionProductRepository.getAllOnGoingAuctions(user_id);
     }
+
+    public List<AuctionProducts> getRandomAuctionProduct(Long user_id) {
+        return auctionProductRepository.getRandomAuctionProduct(user_id);
+    }
 }
