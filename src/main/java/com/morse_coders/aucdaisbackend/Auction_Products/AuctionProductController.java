@@ -67,6 +67,11 @@ public class AuctionProductController {
         return auctionProductService.findAllByproduct_nameOrproduct_descriptionOrTags(keyword);
     }
 
+    @GetMapping("/search/{keyword}/{user_id}")
+    public List<AuctionProducts> findAllByproduct_nameOrproduct_descriptionOrTagsGivenUser(@PathVariable String keyword, @PathVariable String user_id) {
+        return auctionProductService.findAllByproduct_nameOrproduct_descriptionOrTagsGivenUser(keyword, Long.parseLong(user_id));
+    }
+
     /*
     * Create an auction product
     * @return void

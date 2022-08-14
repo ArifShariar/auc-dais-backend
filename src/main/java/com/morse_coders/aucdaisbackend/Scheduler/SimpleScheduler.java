@@ -67,6 +67,7 @@ public class SimpleScheduler {
                 }
                 else if (!product.getSentFailEmail()){
                     product.setSentFailEmail(true);
+                    product.setOngoing(false);
                     auctionProductRepository.save(product);
                     Users user = product.getOwner();
                     EmailDetails emailDetails = new EmailDetails();
@@ -86,7 +87,7 @@ public class SimpleScheduler {
         List<AuctionProducts> auctionProducts = auctionProductRepository.getAllNotOngoingAuctions();
 
         for(AuctionProducts auctionProduct : auctionProducts){
-            if(auctionProduct.getAuction_start_date().compareTo(LocalDateTime.now()) < 0){
+            if(auctionProduct.getAuction_start_date().compareTo(LocalDateTime.now()) < 0 && !auctionProduct.getSentFailEmail()){
                 auctionProduct.setOngoing(true);
                 auctionProductRepository.save(auctionProduct);
                 // send email to all users that saved this product

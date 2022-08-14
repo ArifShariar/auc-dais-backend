@@ -90,4 +90,8 @@ public class AuctionProductService {
     public List<AuctionProducts> getRandomAuctionProduct(Long user_id) {
         return auctionProductRepository.getRandomAuctionProduct(user_id);
     }
+
+    public List<AuctionProducts> findAllByproduct_nameOrproduct_descriptionOrTagsGivenUser(String keyword, long user_id) {
+        return auctionProductRepository.findAllByproduct_nameOrproduct_descriptionOrTagsGivenUser(keyword, user_id);
+    }
 }
