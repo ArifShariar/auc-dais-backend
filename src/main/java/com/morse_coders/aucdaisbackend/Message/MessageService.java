@@ -72,32 +72,38 @@ public class MessageService {
         List<Message> messages = messageRepository.findAllMessageSentOrReceivedSorted(senderId);
         List<Message> curatedList = new ArrayList<>();
 
-        System.out.println("It is different message: ");
-        System.out.println(0 + " " + messages.get(0).getMessage() + "\n\n");
-        for(int i=0;i<messages.size();i++){
-            if(curatedList.isEmpty()){
-                curatedList.add(messages.get(i));
-            }
-            else{
-                boolean alreadyin = false;
-                for(int j=0;j<curatedList.size();j++) {
-
-                    if ((curatedList.get(j).getReceiver().getId().equals(messages.get(i).getReceiver().getId()) &&
-                            curatedList.get(j).getSender().getId().equals(messages.get(i).getSender().getId()))
-
-
-                            || (curatedList.get(j).getReceiver().getId().equals(messages.get(i).getSender().getId()) &&
-                            curatedList.get(j).getSender().getId().equals(messages.get(i).getReceiver().getId()))) {
-                        alreadyin = true;
-                        break;
-                    }
-                }
-                if (!alreadyin) {
+        if (messages.size() > 0) {
+            System.out.println("It is different message: ");
+            System.out.println(0 + " " + messages.get(0).getMessage() + "\n\n");
+            for(int i=0;i<messages.size();i++){
+                if(curatedList.isEmpty()){
                     curatedList.add(messages.get(i));
                 }
+                else{
+                    boolean alreadyin = false;
+                    for(int j=0;j<curatedList.size();j++) {
+
+                        if ((curatedList.get(j).getReceiver().getId().equals(messages.get(i).getReceiver().getId()) &&
+                                curatedList.get(j).getSender().getId().equals(messages.get(i).getSender().getId()))
+
+
+                                || (curatedList.get(j).getReceiver().getId().equals(messages.get(i).getSender().getId()) &&
+                                curatedList.get(j).getSender().getId().equals(messages.get(i).getReceiver().getId()))) {
+                            alreadyin = true;
+                            break;
+                        }
+                    }
+                    if (!alreadyin) {
+                        curatedList.add(messages.get(i));
+                    }
+                }
             }
+            return curatedList;
         }
-        return curatedList;
+        else{
+            return null;
+        }
+
     }
 
     @Transactional
