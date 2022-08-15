@@ -60,4 +60,10 @@ public class UsersController {
     public void updateUserEmail(@PathVariable("id") Long id, @RequestParam(required = false) String email){
         usersService.updateUserEmail(id, email);
     }
+
+
+    @PostMapping("/delete/photo/{token}")
+    public HttpEntity<String> deletePhoto(@PathVariable("token") String token, @RequestBody Users user) {
+        return usersService.deletePhoto(user, token);
+    }
 }

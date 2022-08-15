@@ -4,10 +4,14 @@ package com.morse_coders.aucdaisbackend.FileStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -58,5 +62,16 @@ public class FileStorageService {
     }
 
 
-
+    public HttpEntity<String> deleteFile(FileResponse file) {
+        Path filePath = this.fileStorageLocation.resolve(file.getFileName()).normalize();
+        Path targetfile = this.fileStorageLocation.resolve(filePath.getFileName());
+        File myObj = new File(targetfile.getParent().toString() + "/" + targetfile.getFileName().toString());
+        System.out.println("Here we are0");
+        if(myObj.exists()) {
+            System.out.println("Here we are1");
+            myObj.delete();
+            return new ResponseEntity<>("good", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("bad", HttpStatus.BAD_REQUEST);
+    }
 }

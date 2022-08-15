@@ -217,12 +217,35 @@ public class UsersService {
                         return new ResponseEntity<>(user, HttpStatus.OK);
                     }
                 }
-                System.out.println("TOKENS ARE NOT EQUAL");
+                else {
+                    System.out.println("TOKENS ARE NOT EQUAL");
+                    return new ResponseEntity<>(user, HttpStatus.FORBIDDEN);
+                }
             }
         }
         return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
     }
 
+    public HttpEntity<String> deletePhoto(Users user, String token) {
+        System.out.println("user id: " + user.getId());
+        Optional<Users> userOptional = usersRepository.findById(user.getId());
+        if(userOptional.isPresent()) {
+            user = userOptional.get();
+            Optional<SessionToken> getUserToken = sessionTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+            if(getUserToken.isPresent()) {
+                if(getUserToken.get().getToken().equals(token)) {
+                    user.setImage("");
+                    usersRepository.save(user);
+                    return new ResponseEntity<>("good", HttpStatus.OK);
+                }
+                else {
+                    System.out.println("Tokens are not equal");
+                    return new ResponseEntity<>("forbidden", HttpStatus.FORBIDDEN);
+                }
+            }
+        }
+        return new ResponseEntity<>("bad", HttpStatus.BAD_REQUEST);
+    }
 
     private String buildEmail(String name, String link) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
