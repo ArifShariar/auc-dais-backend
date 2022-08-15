@@ -73,6 +73,7 @@ public class UsersService {
 
     @Transactional
     public HttpEntity<String> confirmToken(String token){
+
         Optional<ConfirmationToken> confirmationTokenOptional = confirmationTokenService.getToken(token);
         if (confirmationTokenOptional.isEmpty()) {
             throw new IllegalStateException("Token " + token + " not found");
@@ -94,6 +95,7 @@ public class UsersService {
 
         //return "Token Confirmed";
         return new ResponseEntity<String>("Token Confirmed", HttpStatus.OK);
+
     }
 
     public Boolean checkPassword(String password, String pwHash) {
