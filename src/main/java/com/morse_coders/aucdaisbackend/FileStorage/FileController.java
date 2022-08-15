@@ -3,6 +3,7 @@ package com.morse_coders.aucdaisbackend.FileStorage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @Controller
@@ -48,5 +50,10 @@ public class FileController {
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .body(file);
+    }
+
+    @PostMapping("/delete")
+    public HttpEntity<String> deleteFile(@RequestBody FileResponse file) {
+        return fileStorageService.deleteFile(file);
     }
 }
