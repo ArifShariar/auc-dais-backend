@@ -38,7 +38,7 @@ public class UsersController {
     }
 
     @GetMapping(value = "/confirm")
-    public HttpEntity<ConfirmationToken> confirm(@RequestParam("token") String token) {
+    public String confirm(@RequestParam("token") String token) {
         return usersService.confirmToken(token);
     }
 
