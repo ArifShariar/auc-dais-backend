@@ -31,14 +31,15 @@ public class WonAuctions {
 
     private Boolean isPaid = false;
 
-    private PaymentMethod paymentMethod;
+
+    private String paymentMethod;
 
 
     public WonAuctions() {
     }
 
 
-    public WonAuctions(Long id, AuctionProducts auctionProduct, Users user, Double bid, LocalDateTime date, LocalDateTime payment_date, Boolean isPaid, PaymentMethod paymentMethod) {
+    public WonAuctions(Long id, AuctionProducts auctionProduct, Users user, Double bid, LocalDateTime date, LocalDateTime payment_date, Boolean isPaid, String paymentMethod) {
         this.id = id;
         this.auctionProduct = auctionProduct;
         this.user = user;
@@ -49,7 +50,7 @@ public class WonAuctions {
         this.paymentMethod = paymentMethod;
     }
 
-    public WonAuctions(AuctionProducts auctionProduct, Users user, Double bid, LocalDateTime date, LocalDateTime payment_date, Boolean isPaid, PaymentMethod paymentMethod) {
+    public WonAuctions(AuctionProducts auctionProduct, Users user, Double bid, LocalDateTime date, LocalDateTime payment_date, Boolean isPaid, String paymentMethod) {
         this.auctionProduct = auctionProduct;
         this.user = user;
         this.bid = bid;
@@ -107,12 +108,12 @@ public class WonAuctions {
         isPaid = paid;
     }
 
-    @Enumerated(EnumType.STRING)
-    public PaymentMethod getPaymentMethod() {
+
+    public String getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
+    public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
