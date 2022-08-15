@@ -60,7 +60,7 @@ public class UsersService {
         ConfirmationToken confirmationToken = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String confirmationLink = "http://localhost:8080/users/confirm?token=" + token;
+        String confirmationLink = "http://localhost:3000/login";
 
         EmailDetails emailDetails = new EmailDetails();
         emailDetails.setFrom("morse@coders.com");
@@ -72,7 +72,8 @@ public class UsersService {
 
 
     @Transactional
-    public String confirmToken(String token){
+    public HttpEntity<String> confirmToken(String token){
+
         Optional<ConfirmationToken> confirmationTokenOptional = confirmationTokenService.getToken(token);
         if (confirmationTokenOptional.isEmpty()) {
             throw new IllegalStateException("Token " + token + " not found");
@@ -92,8 +93,9 @@ public class UsersService {
         user.setConfirmed(true);
 
 
-        return "Token Confirmed";
-        //return new ResponseEntity<ConfirmationToken>(confirmationToken, HttpStatus.OK);
+        //return "Token Confirmed";
+        return new ResponseEntity<String>("Token Confirmed", HttpStatus.OK);
+
     }
 
     public Boolean checkPassword(String password, String pwHash) {
