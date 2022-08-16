@@ -31,6 +31,12 @@ public class Users {
 
     private String image;
 
+
+    private Boolean receiveMessageEmail = true;
+
+
+    private Boolean receiveSavedNotificationEmail = true;
+
     public Users() {
     }
 
@@ -144,6 +150,22 @@ public class Users {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Boolean getReceiveMessageEmail() {
+        return receiveMessageEmail;
+    }
+
+    public void setReceiveMessageEmail(Boolean receiveMessageEmail) {
+        this.receiveMessageEmail = receiveMessageEmail;
+    }
+
+    public Boolean getReceiveSavedNotificationEmail() {
+        return receiveSavedNotificationEmail;
+    }
+
+    public void setReceiveSavedNotificationEmail(Boolean receiveSavedNotificationEmail) {
+        this.receiveSavedNotificationEmail = receiveSavedNotificationEmail;
     }
 
     @Override
