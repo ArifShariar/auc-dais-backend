@@ -29,6 +29,6 @@ public interface HistoryRepository extends JpaRepository<History, Long> {
     History findLastHistoryByAuctionIdAndUserId(Long userId, Long auctionId);
 
 
-
-
+    @Query(value = "SELECT * FROM history WHERE auction_product_id = ?1", nativeQuery = true)
+    List<History> findAllByAuctionId(Long auctionId);
 }

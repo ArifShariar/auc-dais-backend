@@ -167,4 +167,22 @@ public class HistoryService {
         }
         return null;
     }
+
+    public List<History> getAllHistoryRecordOfAuction(Long auctionId, Long userId, String token) {
+
+        Users user = usersRepository.findById(userId).isPresent() ? usersRepository.findById(userId).get():null;
+
+        if (user!=null){
+            Optional<SessionToken> getUserToken = sessionTokenRepository.findByUserAndExpiresAt(user, LocalDateTime.now());
+            if (getUserToken.isPresent()) {
+                if (getUserToken.get().getToken().equals(token)) {
+                    return historyRepository.findAllByAuctionId(auctionId);
+                }
+            }
+            else{
+                throw new RuntimeException("Token is expired / not valid");
+            }
+        }
+        return null;
+    }
 }
