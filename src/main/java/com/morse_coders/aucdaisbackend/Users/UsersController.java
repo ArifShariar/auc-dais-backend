@@ -66,4 +66,9 @@ public class UsersController {
     public HttpEntity<String> deletePhoto(@PathVariable("token") String token, @RequestBody Users user) {
         return usersService.deletePhoto(user, token);
     }
+
+    @PutMapping("{user_id}/update/address/{latitude}/{longitude}/{token}")
+    public HttpEntity<Users> updateAddress(@PathVariable("user_id") Long user_id,@PathVariable("latitude") Double latitude, @PathVariable("longitude") Double longitude, @PathVariable("token") String token) {
+        return usersService.updateAddress( user_id,latitude, longitude, token);
+    }
 }

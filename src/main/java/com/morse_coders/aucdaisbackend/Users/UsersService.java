@@ -7,6 +7,10 @@ import com.morse_coders.aucdaisbackend.Session.SessionTokenRepository;
 import com.morse_coders.aucdaisbackend.Session.SessionTokenService;
 import com.morse_coders.aucdaisbackend.Token.ConfirmationToken;
 import com.morse_coders.aucdaisbackend.Token.ConfirmationTokenService;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +18,11 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -318,5 +327,68 @@ public class UsersService {
 
     public Users getUser(Long id) {
         return usersRepository.findById(id).orElse(null);
+    }
+
+    public HttpEntity<Users> updateAddress(Long user_id, Double latitude, Double longitude, String token) {
+        Users users = usersRepository.findById(user_id).orElse(null);
+        if (users!=null){
+            Optional<SessionToken> sessionToken = sessionTokenRepository.findByUser(users);
+            if (sessionToken.isPresent()){
+                if (sessionToken.get().getToken().equals(token)){
+                    users.setLatitude(latitude);
+                    users.setLongitude(longitude);
+                    usersRepository.save(users);
+                    // https://api.mapbox.com/geocoding/v5/mapbox.places/-73.989,40.733.json?access_token=pk.eyJ1IjoicHAwMDYzeCIsImEiOiJjazhiNmZiMnkwNWw0M2RzMjJub2xhMXYwIn0.OssYldnMWVzFiQr0o24_iw"
+
+                    String map_token = "pk.eyJ1IjoicHAwMDYzeCIsImEiOiJjazhiNmZiMnkwNWw0M2RzMjJub2xhMXYwIn0.OssYldnMWVzFiQr0o24_iw";
+                    String _url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + longitude + "," + latitude + ".json?access_token=" + map_token;
+                    try {
+                        URL url = new URL(_url);
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                        conn.setRequestMethod("GET");
+                        conn.setRequestProperty("Accept", "application/json");
+                        if (conn.getResponseCode() != 200) {
+                            throw new RuntimeException("Failed : HTTP error code : "
+                                    + conn.getResponseCode());
+                        }
+                        StringBuilder output = new StringBuilder();
+                        Scanner scanner = new Scanner(url.openStream());
+                        while (scanner.hasNext()) {
+                            output.append(scanner.nextLine());
+                        }
+                        scanner.close();
+
+                        JSONParser parser = new JSONParser();
+                        JSONObject jsonObject = (JSONObject) parser.parse(output.toString());
+                        JSONArray jsonArray = (JSONArray) jsonObject.get("features");
+
+                        JSONObject newOb = (JSONObject) parser.parse(jsonArray.get(0).toString());
+                        String address = newOb.get("place_name").toString();
+                        if (address!=null){
+                            users.setAddress(address);
+                            usersRepository.save(users);
+                        }
+
+
+
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException("Invalid URL");
+                    } catch (IOException e) {
+                        throw new RuntimeException("Error connecting to URL");
+
+                    } catch (ParseException e) {
+                        throw new RuntimeException("Error parsing JSON");
+                    }
+
+
+                    return new ResponseEntity<>(users, HttpStatus.OK);
+                }
+            }
+        }
+
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
     }
 }
