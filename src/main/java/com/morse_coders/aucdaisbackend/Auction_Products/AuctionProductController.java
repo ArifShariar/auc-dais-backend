@@ -84,7 +84,7 @@ public class AuctionProductController {
     @PostMapping(value = "/create")
     public void createAuctionProduct(@RequestParam String ownerId, @RequestParam String product_name, @RequestParam String product_description,
                                      @RequestParam String tags, @RequestParam String auction_start_date, @RequestParam String auction_end_date,
-                                     @RequestParam String minimum_price, @RequestParam String photos, @RequestParam String address) {
+                                     @RequestParam String minimum_price, @RequestParam String photos) {
 
         // find user by ownerId
         Users user = usersService.getUserById(Long.parseLong(ownerId));
@@ -100,7 +100,6 @@ public class AuctionProductController {
         auctionProduct.setMinimum_price(Double.parseDouble(minimum_price));
         auctionProduct.setPhotos(photos);
 
-        auctionProduct.setAddress(address);
         auctionProduct.setOngoing(false);
         auctionProduct.setSold(false);
         auctionProduct.setSentFailEmail(false);
@@ -119,6 +118,12 @@ public class AuctionProductController {
         auctionProduct.setAuction_end_date(endDate);
 
         auctionProductService.createAuctionProduct(auctionProduct);
+    }
+
+    @PutMapping("/update/auction/{auctionId}/address/{latitude}/{longitude}")
+    public void updateAddress(@PathVariable("auctionId") Long auctionId, @PathVariable("latitude") Double latitude, @PathVariable("longitude") Double longitude){
+        auctionProductService.updateAddress(auctionId, latitude, longitude);
+
     }
 
     @PutMapping("/update/max_bid/{auction_id}")

@@ -35,4 +35,5 @@ public interface AuctionProductRepository extends JpaRepository<AuctionProducts,
 
     @Query(value = "SELECT * FROM auction_products WHERE product_name ILIKE %?1% OR product_description ILIKE %?1% OR tags ILIKE %?1% AND owner_id!= ?2", nativeQuery = true)
     List<AuctionProducts> findAllByproduct_nameOrproduct_descriptionOrTagsGivenUser(String keyword, long user_id);
+
 }
