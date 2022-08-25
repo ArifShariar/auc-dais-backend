@@ -3,6 +3,8 @@ package com.morse_coders.aucdaisbackend.WonAuctions;
 
 import com.morse_coders.aucdaisbackend.Auction_Products.AuctionProducts;
 import com.morse_coders.aucdaisbackend.Users.Users;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ public class WonAuctions {
     private Long id;
 
     @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "auction_product_id")
     private AuctionProducts auctionProduct;
 
