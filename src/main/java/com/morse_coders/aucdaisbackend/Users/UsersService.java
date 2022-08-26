@@ -390,4 +390,19 @@ public class UsersService {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
+
+    public Map<String, Double> getUserLocation(Long id) {
+        Users users = usersRepository.findById(id).orElse(null);
+        if (users!=null){
+
+            if (users.getLatitude() != null && users.getLongitude()!=null){
+                Map<String, Double> map = new HashMap<>();
+                map.put("lng", users.getLongitude());
+                map.put("lat", users.getLatitude());
+                return map;
+            }
+
+        }
+        return null;
+    }
 }

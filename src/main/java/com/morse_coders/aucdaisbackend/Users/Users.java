@@ -37,9 +37,9 @@ public class Users {
 
     private Boolean receiveSavedNotificationEmail = true;
 
-    private Double latitude;
+    private Double latitude = 0.0;
 
-    private Double longitude;
+    private Double longitude = 0.0;
 
     public Users() {
     }

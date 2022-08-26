@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +48,11 @@ public class UsersController {
     @GetMapping(value = "/get/{id}")
     public Users getUser(@PathVariable("id") Long id) {
         return usersService.getUser(id);
+    }
+
+    @GetMapping(value = "/get/{id}/location")
+    public Map<String, Double> getUserLocation(@PathVariable("id") Long id) {
+        return usersService.getUserLocation(id);
     }
 
     @DeleteMapping("/{id}")
