@@ -3,8 +3,10 @@ package com.morse_coders.aucdaisbackend.Auction_Products;
 import com.morse_coders.aucdaisbackend.Users.Users;
 import com.morse_coders.aucdaisbackend.Users.UsersService;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -134,9 +136,9 @@ public class AuctionProductController {
         auctionProductService.update_max_bid(id_auction, id_user, bid_max);
 
     }
-    @DeleteMapping("/delete/{id}")
-    public void deleteAuctionProduct(@PathVariable String id) {
-        auctionProductService.deleteAuctionProduct(Long.parseLong(id));
+    @PostMapping("/delete/{id}")
+    public HttpEntity<String> deleteAuctionProduct(@PathVariable String id) {
+        return auctionProductService.deleteAuctionProduct(Long.parseLong(id));
     }
 
     @PutMapping("/update/{id}")

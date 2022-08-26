@@ -9,12 +9,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -50,8 +54,13 @@ public class AuctionProductService {
     }
 
     // delete an auction product by auction id
-    public void deleteAuctionProduct(Long auctionId) {
+    public HttpEntity<String> deleteAuctionProduct(Long auctionId) {
+        System.out.println("AUCTION ID IS: " + auctionId);
         auctionProductRepository.deleteById(auctionId);
+        if (auctionProductRepository.findById(auctionId).isPresent()) {
+            return new ResponseEntity<String>("fail", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<String>("ok", HttpStatus.OK);
     }
 
     public AuctionProducts getAuctionProductById(long id) {

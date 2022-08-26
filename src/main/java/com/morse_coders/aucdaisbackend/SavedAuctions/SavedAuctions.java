@@ -3,6 +3,8 @@ package com.morse_coders.aucdaisbackend.SavedAuctions;
 
 import com.morse_coders.aucdaisbackend.Auction_Products.AuctionProducts;
 import com.morse_coders.aucdaisbackend.Users.Users;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -21,6 +23,7 @@ public class SavedAuctions {
     private Users user;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "auction_product_id")
     private AuctionProducts auctionProduct;
 
