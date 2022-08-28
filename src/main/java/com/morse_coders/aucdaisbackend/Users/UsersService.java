@@ -436,4 +436,36 @@ public class UsersService {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    public HttpEntity<String> getMessageEmail(Long user_id, String token) {
+        Users users = usersRepository.findById(user_id).orElse(null);
+        if (users!=null){
+            Optional<SessionToken> sessionToken = sessionTokenRepository.findByUser(users);
+            if (sessionToken.isPresent()){
+                if (sessionToken.get().getToken().equals(token)){
+                    Boolean bool = users.getReceiveMessageEmail();
+                    if(bool)    return new ResponseEntity<>("TRUE", HttpStatus.OK);
+                    else    return new ResponseEntity<>("FALSE", HttpStatus.OK);
+                }
+            }
+            return new ResponseEntity<>("Bad", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Bad", HttpStatus.BAD_REQUEST);
+    }
+
+    public HttpEntity<String> getSavedAucEmail(Long user_id, String token) {
+        Users users = usersRepository.findById(user_id).orElse(null);
+        if (users!=null){
+            Optional<SessionToken> sessionToken = sessionTokenRepository.findByUser(users);
+            if (sessionToken.isPresent()){
+                if (sessionToken.get().getToken().equals(token)){
+                    Boolean bool = users.getReceiveSavedNotificationEmail();
+                    if(bool)    return new ResponseEntity<>("TRUE", HttpStatus.OK);
+                    else    return new ResponseEntity<>("FALSE", HttpStatus.OK);
+                }
+            }
+            return new ResponseEntity<>("Bad", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Bad", HttpStatus.BAD_REQUEST);
+    }
 }
