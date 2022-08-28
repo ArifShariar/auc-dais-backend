@@ -75,4 +75,16 @@ public class UsersController {
     public HttpEntity<Users> updateAddress(@PathVariable("user_id") Long user_id,@PathVariable("latitude") Double latitude, @PathVariable("longitude") Double longitude, @PathVariable("token") String token) {
         return usersService.updateAddress( user_id,latitude, longitude, token);
     }
+
+    @PutMapping("{user_id}/update/receive_message_email/{bool}/{token}")
+    public HttpEntity<String> updateReceiveMessageEmail(@PathVariable("user_id") Long user_id, @PathVariable("bool") String bool, @PathVariable("token") String token) {
+        Boolean check = Boolean.parseBoolean(bool);
+        return usersService.updateReceiveMessageEmail(user_id, check, token);
+    }
+
+    @PutMapping("{user_id}/update/receive_saved_notification_email/{bool}/{token}")
+    public HttpEntity<String> updateReceiveSavedNotificationEmail(@PathVariable("user_id") Long user_id, @PathVariable("bool") String bool, @PathVariable("token") String token) {
+        Boolean check = Boolean.parseBoolean(bool);
+        return usersService.updateReceiveSavedNotificationEmail(user_id, check, token);
+    }
 }

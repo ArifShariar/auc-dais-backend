@@ -405,4 +405,35 @@ public class UsersService {
         }
         return null;
     }
+
+    public HttpEntity<String> updateReceiveMessageEmail(Long user_id, Boolean check, String token) {
+        Users users = usersRepository.findById(user_id).orElse(null);
+        if (users!=null){
+            Optional<SessionToken> sessionToken = sessionTokenRepository.findByUser(users);
+            if (sessionToken.isPresent()){
+                if (sessionToken.get().getToken().equals(token)){
+                    users.setReceiveMessageEmail(check);
+                    usersRepository.save(users);
+                    return new ResponseEntity<>("Success", HttpStatus.OK);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    public HttpEntity<String> updateReceiveSavedNotificationEmail(Long user_id, Boolean check, String token) {
+        Users users = usersRepository.findById(user_id).orElse(null);
+        if (users!=null){
+            Optional<SessionToken> sessionToken = sessionTokenRepository.findByUser(users);
+            if (sessionToken.isPresent()){
+                if (sessionToken.get().getToken().equals(token)){
+                    users.setReceiveSavedNotificationEmail(check);
+                    usersRepository.save(users);
+                    return new ResponseEntity<>("Success", HttpStatus.OK);
+                }
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }
