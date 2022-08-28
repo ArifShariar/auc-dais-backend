@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @Service
 public class AuctionProductService {
@@ -115,7 +116,8 @@ public class AuctionProductService {
     }
 
     public List<AuctionProducts> findAllByproduct_nameOrproduct_descriptionOrTagsGivenUser(String keyword, long user_id) {
-        return auctionProductRepository.findAllByproduct_nameOrproduct_descriptionOrTagsGivenUser(keyword, user_id);
+        List <AuctionProducts> auctionProducts =  auctionProductRepository.findAllByproduct_nameOrproduct_descriptionOrTagsGivenUser(keyword, user_id);
+        return auctionProducts.stream().filter(auctionProduct -> auctionProduct.getOwner().getId() != user_id).toList();
     }
 
     public void updateAddress(Long auctionId, Double latitude, Double longitude) {

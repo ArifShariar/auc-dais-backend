@@ -47,6 +47,11 @@ public class RatingReviewController {
         ratingReviewService.deleteById(id);
     }
 
+    @GetMapping("/get/myRatings/{user_id}")
+    public List<RatingReview> getMyRatings(@PathVariable("user_id") Long user_id) {
+        return ratingReviewService.getAllRatingOfAOwner(user_id);
+    }
+
 
 
 }

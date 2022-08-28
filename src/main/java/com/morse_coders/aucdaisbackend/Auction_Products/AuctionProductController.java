@@ -69,15 +69,20 @@ public class AuctionProductController {
         return auctionProductService.getRandomAuctionProduct();
     }
 
-    @GetMapping("/search/{keyword}")
-    public List<AuctionProducts> findAllByproduct_nameOrproduct_descriptionOrTags(@PathVariable String keyword) {
-        return auctionProductService.findAllByproduct_nameOrproduct_descriptionOrTags(keyword);
-    }
 
     @GetMapping("/search/{keyword}/{user_id}")
     public List<AuctionProducts> findAllByproduct_nameOrproduct_descriptionOrTagsGivenUser(@PathVariable String keyword, @PathVariable String user_id) {
         return auctionProductService.findAllByproduct_nameOrproduct_descriptionOrTagsGivenUser(keyword, Long.parseLong(user_id));
     }
+
+
+
+    @GetMapping("/search/{keyword}")
+    public List<AuctionProducts> findAllByproduct_nameOrproduct_descriptionOrTags(@PathVariable String keyword) {
+        return auctionProductService.findAllByproduct_nameOrproduct_descriptionOrTags(keyword);
+    }
+
+
 
     /*
     * Create an auction product

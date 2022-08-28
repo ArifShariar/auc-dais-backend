@@ -5,9 +5,12 @@ import com.morse_coders.aucdaisbackend.Auction_Products.AuctionProducts;
 import com.morse_coders.aucdaisbackend.Users.Users;
 import com.morse_coders.aucdaisbackend.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.intercept.RunAsImplAuthenticationProvider;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -64,5 +67,17 @@ public class RatingReviewService {
 
     public List<RatingReview> getAllRatingReviews() {
         return ratingReviewRepository.findAll();
+    }
+
+
+    public List<RatingReview> getAllRatingOfAOwner(Long userId){
+        List<RatingReview> allRatingReviews = ratingReviewRepository.findAll();
+        List<RatingReview> filtered = new ArrayList<>();
+        for(RatingReview rr : allRatingReviews){
+            if(Objects.equals(rr.getAuctionProduct().getOwner().getId(), userId)){
+                filtered.add(rr);
+            }
+        }
+        return filtered;
     }
 }
