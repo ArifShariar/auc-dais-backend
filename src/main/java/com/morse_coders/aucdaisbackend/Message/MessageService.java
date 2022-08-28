@@ -54,7 +54,10 @@ public class MessageService {
         emailDetails.setFrom(sender.get().getEmail());
         emailDetails.setSubject(sender.get().getFirstName() + " has sent you a message");
         emailDetails.setBody(message.getMessage());
-        emailSender.send(emailDetails);
+        if(receiver.get().getReceiveMessageEmail()){
+            emailSender.send(emailDetails);
+        }
+
 
 
         return messageRepository.save(message);

@@ -96,7 +96,6 @@ public class SimpleScheduler {
 
                 for(Long userId : userList){
                     Users user = usersRepository.findById(userId).get();
-
                     EmailDetails emailDetails = new EmailDetails();
 
                     String auctionURL = "http://localhost:3000/auction/" + auctionProduct.getId();
@@ -107,7 +106,9 @@ public class SimpleScheduler {
                     emailDetails.setBody("Auction "+ auctionProduct.getProduct_name() +" is live. You can now bid on this product." +
                             "You can visit our website to bid on this product. " +
                             "Or you can directly visit this link: " + auctionURL);
-                    emailSender.send(emailDetails);
+                    if (user.getReceiveSavedNotificationEmail()) {
+                        emailSender.send(emailDetails);
+                    }
 
                 }
             }
