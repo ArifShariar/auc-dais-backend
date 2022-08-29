@@ -77,9 +77,21 @@ public class UsersController {
     }
 
     @PutMapping("{user_id}/update/receive_message_email/{bool}/{token}")
-    public HttpEntity<String> updateReceiveMessageEmail(@PathVariable("user_id") Long user_id, @PathVariable("bool") String bool, @PathVariable("token") String token) {
-        Boolean check = Boolean.parseBoolean(bool);
+    public HttpEntity<String> updateReceiveMessageEmail(@PathVariable("user_id") Long user_id, @PathVariable("bool") boolean bool, @PathVariable("token") String token) {
+        //Boolean check = Boolean.parseBoolean(bool);
+        Boolean check = bool;
+        System.out.println("THE RECEIVE EMAIL MESSAGE IS : " + bool);
         return usersService.updateReceiveMessageEmail(user_id, check, token);
+    }
+
+    @GetMapping("{user_id}/settings/receive_message_email/{token}")
+    public HttpEntity<String> getMessageEmail(@PathVariable("user_id") Long user_id, @PathVariable("token") String token) {
+        return usersService.getMessageEmail(user_id, token);
+    }
+
+    @GetMapping("{user_id}/settings/receive_saved_auc_email/{token}")
+    public HttpEntity<String> getSavedAucEmail(@PathVariable("user_id") Long user_id, @PathVariable("token") String token) {
+        return usersService.getSavedAucEmail(user_id, token);
     }
 
     @PutMapping("{user_id}/update/receive_saved_notification_email/{bool}/{token}")
